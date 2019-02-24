@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>04_class与style的绑定</title>
+        <style>
+            .aClass{
+                color:red;
+            }
+            .bClass{
+                color: blue;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="app">
+
+            <h2>1.class 绑定 : : class='xxx'</h2>
+            <p class="aClass" :class="a">xxx是字符串</p>
+
+            <h2>2.style 绑定</h2>
+            <button @click="update">更新</button>
+        </div>
+
+        <script src="../vue.js"></script>
+        <script >
+            
+            new Vue({
+                el:'#app',
+                data:{
+                    a:'aClass'
+                },
+                methods:{
+                    update(){
+                        this.a='bClass'
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

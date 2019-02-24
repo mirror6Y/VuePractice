@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World</title>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="username">
+    <p>Hello {{username}}</p>
+</div>
+
+<script src="../vue.js"></script>
+<script>
+    //创建Vue实例
+    const vm = new Vue({    //配置对象
+        el: '#app',         //element 元素
+        data: {             // 数据(model)
+            username: 'Vue'
+        }
+    })
+</script>
+
+</body>
+</html>
