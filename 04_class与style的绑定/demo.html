@@ -1,41 +1,59 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>04_class与style的绑定</title>
-        <style>
-            .aClass{
-                color:red;
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>04_class与style的绑定</title>
+    <style>
+        .aClass {
+            color: red;
+        }
+
+        .bClass {
+            color: blue;
+        }
+
+        .cClass {
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+
+    <h2>1.class 绑定 : : class='xxx'</h2>
+    <p class="bClass" :class="a">xxx是字符串</p>
+    <p :class="{aClass: isA, bClass: isB}">表达式是对象: {aClass:isA, bClass: isB}</p>
+    <p :class="['aClass', 'cClass']"> 表达式是数组: ['aClass', 'bClass']</p>
+
+    <h2>2.style 绑定</h2>
+    <p :style="{color, fontSize}">style="{ color: activeColor, fontSize: fontSize + 'px' }"</p>
+    <!--  activeColor 不是很懂  -->
+    <button @click="update">更新</button>
+</div>
+
+<script src="../vue.js"></script>
+<script>
+
+    new Vue({
+        el: '#app',
+        data: {
+            a: 'aClass',
+            isA: true,
+            isB: false,
+            color: 'red',
+            fontSize: '20px'
+        },
+        methods: {
+            update() {
+                this.a = 'cClassC';
+                this.isA = false;
+                this.isB = true;
+                this.color = 'blue';
+                this.fontSize = '30px';
             }
-            .bClass{
-                color: blue;
-            }
-        </style>
-    </head>
-    <body>
-
-        <div id="app">
-
-            <h2>1.class 绑定 : : class='xxx'</h2>
-            <p class="aClass" :class="a">xxx是字符串</p>
-
-            <h2>2.style 绑定</h2>
-            <button @click="update">更新</button>
-        </div>
-
-        <script src="../vue.js"></script>
-        <script >
-            
-            new Vue({
-                el:'#app',
-                data:{
-                    a:'aClass'
-                },
-                methods:{
-                    update(){
-                        this.a='bClass'
-                    }
-                }
-            })
-        </script>
-    </body>
+        }
+    })
+</script>
+</body>
 </html>

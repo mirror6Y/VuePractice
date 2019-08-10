@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>模板语法</title>
+    <title>02_模板语法</title>
 </head>
 <body>
 
@@ -14,7 +14,7 @@
         <p v-html="msg"></p><!--innerHtml-->
 
         <h2>2.指令一：强制数据绑定</h2>
-        <img src="imgUrl"><br>
+        <img src="imgUrl" alt="图片"><br>
         <img v-bind:src="imgUrl"><br>
         <img :src="imgUrl">
         

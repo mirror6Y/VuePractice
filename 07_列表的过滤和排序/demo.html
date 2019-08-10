@@ -15,9 +15,11 @@
     -->
 
     <div id="app">
-        <input type="text" v-model="searchName">
+        <label>
+            <input type="text" v-model="searchName">
+        </label>
         <ul>
-            <li v-for="(p,index) in filterpersons" :key="index">
+            <li v-for="(p,index) in filterPersons" :key="index">
                 {{index}}---{{p.name}}---{{p.age}}
             </li>
         </ul>
@@ -48,7 +50,7 @@
                 ]
             },
             computed: {
-                filterpersons() {
+                filterPersons() {
                     //取出相关的数据
                     const { searchName, persons, orderType } = this
 
