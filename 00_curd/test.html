@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!-- // v-model ：在表单控件元素（input等）上创建双向数据绑定（数据源）-->
+    请输入查询关键字：<input type="text" v-model="search"/>
+    <table>
+        <tr>
+            <th>教师工号</th>
+            <th>教师姓名</th>
+            <th>院系</th>
+            <th>办公室</th>
+            <th>联系方式</th>
+        </tr>
+        <tr v-for='x in list'>
+            <td>{{x.cId}}</td>
+            <td>{{x.cName}}</td>
+            <td>{{x.nCollege}}</td>
+            <td>{{x.cOffice}}</td>
+            <td>{{x.cTel}}</td>
+        </tr>
+    </table>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            /*数组装de 信息*/
+            info: [
+                {
+                    'name': '智子',
+                    'sex': '女',
+                    'age': '18'
+                },
+                {
+                    'name': '王静云',
+                    'sex': '女',
+                    'age': '19'
+                },
+                {
+                    'name': '王云',
+                    'sex': '女',
+                    'age': '20'
+                },
+                {
+                    'name': '张三',
+                    'sex': '男',
+                    'age': '22'
+                },
+                {
+                    'name': '李四',
+                    'sex': '男',
+                    'age': '22'
+                },
+                {
+                    'name': '王五',
+                    'sex': '男',
+                    'age': '18'
+                },
+                {
+                    'name': '赵璐',
+                    'sex': '女',
+                    'age': '18'
+                },
+                {
+                    'name': '李文',
+                    'sex': '女',
+                    'age': '22'
+                },
+                {
+                    'name': '海翔',
+                    'sex': '女',
+                    'age': '21'
+                }
+            ],
+            /*定义变量装查询输入的字符串*/
+            search: ''
+        },
+        /*computed比methods效率高，不需要重新渲染页面*/
+        computed: {
+            // 计算属性（过滤） 查询功能
+            list: function () {
+                let arr = [];
+                let _this = this;
+                for (let i = 0; i < _this.info.length; i++) {
+                    //  console.log(_this.info.length)
+                    if (this.info[i].name.indexOf(_this.search) != -1) {
+                        arr.push(_this.info[i])
+                    }
+                }
+                return arr;
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

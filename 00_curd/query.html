@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../vue.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <!-- // v-model ：在表单控件元素（input等）上创建双向数据绑定（数据源）-->
+    请输入查询关键字：<input type="text" v-model="search" />
+    <table>
+        <tr>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>年龄</th>
+        </tr>
+        <tr v-for='x in list'>
+            <td>{{x.name}}</td>
+            <td>{{x.sex}}</td>
+            <td>{{x.age}}</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
