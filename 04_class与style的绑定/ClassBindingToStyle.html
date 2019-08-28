@@ -21,10 +21,10 @@
 
 <div id="app">
 
-    <h2>1.class 绑定 : : class='xxx'</h2>
-    <p class="bClass" :class="a">xxx是字符串</p>
+    <h2>1.class 绑定 </h2>
+    <p class="bClass" :class="a">表达式是字符串：aaa</p>
     <p :class="{aClass: isA, bClass: isB}">表达式是对象: {aClass:isA, bClass: isB}</p>
-    <p :class="['aClass', 'cClass']"> 表达式是数组: ['aClass', 'bClass']</p>
+    <p :class="['aClass', 'cClass']"> 表达式是数组: ['aClass', 'cClass']</p>
 
     <h2>2.style 绑定</h2>
     <p :style="{color, fontSize}">style="{ color: activeColor, fontSize: fontSize + 'px' }"</p>
