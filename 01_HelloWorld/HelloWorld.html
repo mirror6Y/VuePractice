@@ -7,6 +7,7 @@
 <body>
 <div id="app">
     <label>
+        <!--v-model 作用：在表单控件或者组件上创建双向绑定。-->
         <input type="text" v-model="username">
     </label>
     <p>Hello {{username}}</p>
@@ -15,7 +16,7 @@
 <script src="../vue.js"></script>
 <script>
     //创建Vue实例
-    const vm = new Vue({    //配置对象
+    new Vue({    //配置对象
         el: '#app',         //element 元素
         data: {             // 数据(model)
             username: 'Vue'
