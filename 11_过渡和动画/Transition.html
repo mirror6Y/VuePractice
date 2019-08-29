@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>11_过渡</title>
+</head>
+<style>
+
+    /*显示和隐藏时的过滤效果 */
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+
+    /*隐藏时的样式 */
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+    {
+        opacity: 0;
+    }
+
+    /*显示时的过滤效果 */
+    .move-enter-active {
+        transition: all 1s;
+    }
+
+    /*隐藏时的过滤效果 */
+    .move-leave-active {
+        transition: all 3s;
+    }
+
+    /*隐藏时的样式 */
+    .move-enter, .move-leave-to {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+</style>
+<body>
+
+<!--
+    1.vue动画的理解
+    操作css的transition或animation
+    vue会给目标元素添加/移除特定的class
+    2.基本过渡动画的编码
+    1）.在目标元素外包裹 <transition name="str">
+    2）.定义class样式
+        1>.指定过渡样式：transition
+        2>.指定隐藏时的样式：opacity /其他
+    3.过渡的类名
+    fade-enter-active：指定显示的transition
+    fade-leave-active：指定隐藏的transition
+    fade-enter：指定隐藏的样式
+-->
+<div id="app1">
+    <button @click="show = !show">toggle</button>
+    <!--无渐变效果-->
+    <p v-show="show">hello</p>
+    <!--渐变 过渡-->
+    <transition name="fade">
+        <p v-if="show">hello</p>
+    </transition>
+</div>
+
+<div id="app2">
+    <button @click="show = !show">toggle</button>
+    <transition name="move">
+        <p v-if="show">hello</p>
+    </transition>
+</div>
+
+<script src="../vue.js"></script>
+<script>
+    new Vue({
+        el: '#app1',
+        data() {
+            return {
+                show: true
+            }
+        }
+    });
+
+    new Vue({
+        el: '#app2',
+        data() {
+            return {
+                show: true
+            }
+        }
+    })
+</script>
+
+</body>
+</html>
