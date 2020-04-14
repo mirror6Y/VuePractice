@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>helloWorld</title>
-    <script src="../babel.min.js"></script>
-    <script src="../react.development.js"></script>
-    <script src="../react-dom.development.js"></script>
+    <script src="../js/babel.min.js"></script>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
 </head>
+
 <body>
 
-<div id="test"></div>
-<div id="test1"></div>
-<script type="text/babel">
+    <div id="test"></div>
+    <div id="test1"></div>
+    <script type="text/babel">
 
-    //创建虚拟的dom元素
-    const ele = <h2>hellWorld</h2>;
-    //将元素渲染到页面真实dom
-    ReactDom.render(<h2>hellWorld</h2>, document.getElementById('test1'));
-</script>
-<script type="text/babel">
-    ReactDOM.render(
-        <h1>Hello, world!</h1>,
-        document.getElementById('test')
-    );
-</script>
+        //1、创建虚拟的dom元素
+        const ele = <h2>hellWorld</h2>;
+        //2、将元素渲染到页面真实dom
+        ReactDOM.render(
+            ele,
+            document.getElementById('test1')
+        );
+    </script>
+    <script type="text/babel">
+
+        ReactDOM.render(
+            <h1>Hello, world!</h1>,
+            document.getElementById('test')
+        );
+    </script>
 </body>
+
 </html>
