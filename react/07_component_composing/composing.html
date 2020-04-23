@@ -17,16 +17,32 @@
 
     <script type="text/babel">
 
-        class App extends React.component {
 
+        class App extends React.Component {
 
-            
+            constructor(props) {
+                super(props)
+                this.state = {
+                    todos: ["吃饭", "睡觉", "打游戏"]
+                }
+
+                this.addTodo=this.addTodo.bind(this);
+            }
+
+            addTodo(todo) {
+                const { todos } = this.statet;
+                todos.unshift(todo);
+                //更新状态
+                this.setState({ todos });
+            }
+
             render() {
+                const { todos } = this.state
                 return (
                     <div>
                         <h1>ToDO List</h1>
-                        <Add />
-                        <List />
+                        <Add count={todos.length} addTodo={this.addTodo} />
+                        <List todos={todos} />
                     </div>
                 )
             }
@@ -35,14 +51,38 @@
 
         class Add extends React.component {
 
+            constructor(props) {
+                super(props)
+
+                this.add = this.add.bind(this)
+            }
+
+            add() {
+                //1.读取输入数据
+                const todo = this.todoInput.value.trim();
+                //2.检查合法性
+                if (!todo) {
+                    return
+                }
+                //3.添加
+                this.props.addTodo(todo)
+                //4.清楚输入
+                this.value="";
+            }
+
             render() {
                 return (
                     <div>
-                        <input type="text" />
-                        <button>add #4</button>
+                        <input type="text" ref={input => this.todoInput = input} />
+                        <button onClick={this.add}>add #{this.props.count + 1}</button>
                     </div>
                 )
             }
+        }
+
+        Add.propTypes = {
+            count: propTypes.number.isRequired,
+            addTodo: PropTypes.func.isRequired
         }
 
         class List extends React.component {
@@ -50,12 +90,15 @@
             render() {
                 return (
                     <ul>
-                        <li>AAA</li>
-                        <li>BBB</li>
-                        <li>CCC</li>
+                        {
+                            todos.map((todo, index) => <li key={index}>{todo}</li>)}
                     </ul>
                 )
             }
+        }
+
+        List.propTypes = {
+            todos: PropTypes.array.isRequired
         }
 
         ReactDOM.render(
