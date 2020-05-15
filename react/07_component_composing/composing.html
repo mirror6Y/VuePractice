@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>component</title>
     <script src="../js/babel.min.js"></script>
     <script src="../js/react.development.js"></script>
     <script src="../js/react-dom.development.js"></script>
@@ -21,23 +21,25 @@
         class App extends React.Component {
 
             constructor(props) {
-                super(props)
+                super(props);
+
                 this.state = {
                     todos: ["吃饭", "睡觉", "打游戏"]
-                }
+                };
 
                 this.addTodo=this.addTodo.bind(this);
             }
 
             addTodo(todo) {
-                const { todos } = this.statet;
+                const { todos } = this.state;
                 todos.unshift(todo);
                 //更新状态
-                this.setState({ todos });
+                this.setState({todos});
             }
 
             render() {
-                const { todos } = this.state
+                const { todos } = this.state;
+
                 return (
                     <div>
                         <h1>ToDO List</h1>
@@ -49,12 +51,13 @@
 
         }
 
-        class Add extends React.component {
+        class Add extends React.Component {
 
             constructor(props) {
-                super(props)
 
-                this.add = this.add.bind(this)
+                super(props);
+
+                this.add = this.add.bind(this);
             }
 
             add() {
@@ -65,7 +68,7 @@
                     return
                 }
                 //3.添加
-                this.props.addTodo(todo)
+                this.props.addTodo(todo);
                 //4.清楚输入
                 this.value="";
             }
@@ -81,17 +84,16 @@
         }
 
         Add.propTypes = {
-            count: propTypes.number.isRequired,
+            count: PropTypes.number.isRequired,
             addTodo: PropTypes.func.isRequired
-        }
+        };
 
-        class List extends React.component {
+        class List extends React.Component {
 
             render() {
                 return (
                     <ul>
-                        {
-                            todos.map((todo, index) => <li key={index}>{todo}</li>)}
+                        {todos.map((todo, index) => <li key={index}>{todo}</li>)}
                     </ul>
                 )
             }
@@ -99,7 +101,7 @@
 
         List.propTypes = {
             todos: PropTypes.array.isRequired
-        }
+        };
 
         ReactDOM.render(
             <App />,

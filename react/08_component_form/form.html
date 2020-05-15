@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>form</title>
     <script src="../js/babel.min.js"></script>
     <script src="../js/react.development.js"></script>
     <script src="../js/react-dom.development.js"></script>
@@ -19,15 +19,15 @@
         class LoginForm extends React.Component {
 
             constructor(props) {
-                super(props)
+                super(props);
 
                 //初始化状态
                 this.state = {
                     pwd: ""
-                }
+                };
 
-                this.handleSubmit = this.handleSubmit.bind(this)
-                this.handleChange = this.handleChange.bind(this)
+                this.handleSubmit = this.handleSubmit.bind(this);
+                this.handleChange = this.handleChange.bind(this);
 
             }
 
@@ -47,7 +47,7 @@
                 //读取输入的值
                 const pwd = event.target.value;
                 //更新pwd的状态
-                this.setState({ pwd })
+                this.setState({pwd})
             }
 
             render() {
