@@ -9,21 +9,8 @@ class User extends Component {
         super(props);
 
         this.state = {
-
-            // dataSource: [
-            //     { key: 1, nid: 1, name: 'tab', gender: '男', age: 22, schoolname: '第1中学', description: '热爱班级活动，尊敬老师' },
-            //     { key: 2, nid: 2, name: 'shift', gender: '男', age: 22, schoolname: '第2中学', description: '热爱班级活动，尊敬老师' },
-            //     { key: 6, nid: 6, name: 'ctrl', gender: '男', age: 22, schoolname: '第3中学', description: '热爱班级活动，尊敬老师' },
-            //     { key: 4, nid: 4, name: 'caps lock', gender: '男', age: 22, schoolname: '第4中学', description: '热爱班级活动，尊敬老师' },
-            //     { key: 5, nid: 5, name: 'enter', gender: '女', age: 22, schoolname: '第5中学', description: '热爱班级活动，尊敬老师' }
-            // ],
-            // index: '',
-            // PersonCount: 0,
-            // selectedRowKeys: [],
-            // selectedRows: [],
-            // record: 'abc',
-            users:[],
-            isLoaded:false
+            users: [],
+            isLoaded: false
 
         };
 
@@ -58,7 +45,7 @@ class User extends Component {
     componentDidMount() {
         console.log('getUserList');
         const url = "/system/user/getUserList";
-        const _this=this;
+        const _this = this;
         axios.get(url)
             .then(function (response) {
                 console.log(response.data.data.records)
@@ -117,23 +104,24 @@ class User extends Component {
     render() {
         return (
 
-            <div className="div_body">
-                <div id="div_left"></div>
-                <div id="div-right">
-                    <div className="table_oftop">
+            <div >
+                {/* <div id="div_left"></div>
+                <div id="div-right"> */}
+                {/* <div className="table_oftop">
                         <Button type="primary" icon="search" style={{ float: "right", marginLeft: 10 }}>查询</Button>
                         <Input placeholder="input search text" style={{ width: 300, float: "right" }} />
                         <div id="add_delete">
                             <Button type="primary" className="selectedDelete" onClick={this.handleSelectedDelete}>删除所选</Button>
                         </div>
-                    </div>
-                    <Table columns={this.columns}
+                    </div> */}
+                <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
+                    添加
+                    </Button>
+                <Table columns={this.columns}
                     dataSource={this.state.users}
-                        className="table"
-                        // rowSelection={rowSelection}
-                        scroll={{ y: 400 }} />
+                />
 
-                </div>
+                {/* </div> */}
             </div>
 
         );
