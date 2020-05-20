@@ -6,7 +6,7 @@ import { Modal, Button } from 'antd'
 class UserDeatil extends React.Component {
     constructor(props) {
         super(props);
-console.log(this.props)
+        console.log(this.props)
         this.state = {
             visible: false
         }
@@ -30,14 +30,14 @@ console.log(this.props)
     render() {
         return (
             <div>
-                <a onClick={this.handlePopup}>详情</a>
+                <Button size="smallButton" onClick={this.handlePopup}>详情</Button>
                 <Modal title={this.props.pass.name} visible={this.state.visible}
                     onOk={this.handleOkOrCancel} onCancel={this.handleOkOrCancel}>
+                    <p>账号：   {this.props.pass.account}</p>
                     <p>姓名：   {this.props.pass.name}</p>
                     <p>性别：    {this.props.pass.gender}</p>
-                    <p>年龄：      {this.props.pass.age}</p>
-                    <p>就读学校：   {this.props.pass.schoolname}</p>
-                    <p>在校表现：   {this.props.pass.description}</p>
+                    <p>联系方式：      {this.props.pass.tel}</p>
+                    <p>电子邮箱：   {this.props.pass.email}</p>
                 </Modal>
             </div>
         )

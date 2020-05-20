@@ -41,7 +41,7 @@ class User extends Component {
                         </Popconfirm>
                         <Button size="small" onClick={() => this.editHandle(record)}>编辑</Button>
                         <Popconfirm title="确定要删除吗？" onConfirm={() => this.onDelete(record.id)}>
-                            <Button size="small" ><DeleteTwoTone />删除</Button>
+                            <Button size="smallButton" ><DeleteTwoTone />删除</Button>
                         </Popconfirm>
                         <span className="ant-divider" />
                     </span>
