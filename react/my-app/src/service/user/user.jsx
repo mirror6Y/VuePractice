@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Table, Button, Input, Popconfirm } from 'antd';
-import { SmileOutlined } from '@ant-design/icons';
+import { DeleteTwoTone } from '@ant-design/icons';
 import axios from 'axios';
+
+import UserDetail from './UserDetail'
+
 
 class User extends Component {
 
@@ -10,15 +13,18 @@ class User extends Component {
 
         this.state = {
             users: [],
-            isLoaded: false
-
+            // loading: false,
+            isLoaded: false,
+            selectedRows: [],
+            selectedRowKeys: [],
         };
 
         this.onDelete = this.onDelete.bind(this);
         this.appendPerson = this.appendPerson.bind(this);
-        this.handleSelectedDelete = this.handleSelectedDelete.bind(this);
+        this.deleteBatchUser = this.deleteBatchUser.bind(this);
 
         this.columns = [
+            { title: '主键', dataIndex: 'id', key: 'id' },
             { title: '账号', dataIndex: 'account', key: 'account', width: '8%' },
             { title: '姓名', dataIndex: 'name', key: 'name', width: '15%' },
             { title: '性别', dataIndex: 'gender', key: 'gender', width: '10%' },
@@ -28,11 +34,14 @@ class User extends Component {
             {
                 title: '操作', dataIndex: '', key: 'operation', width: '32%', render: (text, record, index) => (
                     <span>
+                        <UserDetail className="user_details"  pass={record}/>
                         <Popconfirm title="删除不可恢复，你确定要删除吗?" >
                             <a title="用户删除" className="mgl10" onClick={this.onDelete.bind(this, index)}>
-                                <SmileOutlined /></a>
-
-
+                                <DeleteTwoTone /></a>
+                        </Popconfirm>
+                        <Button size="small" onClick={() => this.editHandle(record)}>编辑</Button>
+                        <Popconfirm title="确定要删除吗？" onConfirm={() => this.onDelete(record.id)}>
+                            <Button size="small" ><DeleteTwoTone />删除</Button>
                         </Popconfirm>
                         <span className="ant-divider" />
                     </span>
@@ -48,8 +57,6 @@ class User extends Component {
         const _this = this;
         axios.get(url)
             .then(function (response) {
-                console.log(response.data.data.records)
-
                 _this.setState({
                     users: response.data.data.records,
                     isLoaded: true
@@ -83,45 +90,51 @@ class User extends Component {
     }
 
     onDelete(index) {
-        console.log(index)
-        const users = [...this.state.users];
-        users.splice(index, 1);//index为获取的索引，后面的 1 是删除几行
-        this.setState({ users });
+        console.log("deleteUser:" + index)
+        const url = "/system/user/deleteUser/" + index;
+        axios.delete(url)
+            .then(response => { this.init() })
+            .catch(function (error) {
+                console.log(error);
+            })
     }
 
-    handleSelectedDelete() {
-        if (this.state.selectedRowKeys.length > 0) {
-            console.log(...this.state.selectedRowKeys)
-            const users = [...this.state.users]
-            users.splice(this.state.selectedRows, this.state.selectedRows.length)
-            this.setState({ users });
-        }
-        else {
+    deleteBatchUser() {
 
-        }
+        console.log("111" + this.state.selectedRowKeys)
     }
+
+    onSelectChange = selectedRowKeys => {
+        this.setState({ selectedRowKeys });
+        console.log('selectedRowKeys changed: ', selectedRowKeys);
+
+    };
 
     render() {
+
+        const { selectedRowKeys } = this.state;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+        };
+        // const hasSelected = selectedRowKeys.length > 0;
+
         return (
 
             <div >
-                {/* <div id="div_left"></div>
-                <div id="div-right"> */}
-                {/* <div className="table_oftop">
-                        <Button type="primary" icon="search" style={{ float: "right", marginLeft: 10 }}>查询</Button>
-                        <Input placeholder="input search text" style={{ width: 300, float: "right" }} />
-                        <div id="add_delete">
-                            <Button type="primary" className="selectedDelete" onClick={this.handleSelectedDelete}>删除所选</Button>
-                        </div>
-                    </div> */}
                 <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
                     添加
                     </Button>
-                <Table columns={this.columns}
+                <div style={{ marginBottom: 16 }}>
+                    <Button type="primary" onClick={this.deleteBatchUser} >
+                        <DeleteTwoTone />批量删除
+                    </Button>
+                </div>
+                <Table
+                    rowSelection={rowSelection}
+                    columns={this.columns}
                     dataSource={this.state.users}
                 />
-
-                {/* </div> */}
             </div>
 
         );
