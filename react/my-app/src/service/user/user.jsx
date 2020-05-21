@@ -4,6 +4,7 @@ import { DeleteTwoTone } from '@ant-design/icons';
 import axios from 'axios';
 
 import UserDetail from './UserDetail'
+import UserAdd from './UserAdd'
 
 
 class User extends Component {
@@ -34,7 +35,7 @@ class User extends Component {
             {
                 title: '操作', dataIndex: '', key: 'operation', width: '32%', render: (text, record, index) => (
                     <span>
-                        <UserDetail className="user_details"  pass={record}/>
+                        <UserDetail className="user_details" pass={record} />
                         <Popconfirm title="删除不可恢复，你确定要删除吗?" >
                             <a title="用户删除" className="mgl10" onClick={this.onDelete.bind(this, index)}>
                                 <DeleteTwoTone /></a>
@@ -89,6 +90,14 @@ class User extends Component {
 
     }
 
+    getUserMsg = (result, msg) => {
+        console.log(result, msg)
+        // 很奇怪这里的result就是子组件那bind的第一个参数this，msg是第二个参数
+        // this.setState({
+        //     childrenMsg: msg
+        // })
+    }
+
     onDelete(index) {
         console.log("deleteUser:" + index)
         const url = "/system/user/deleteUser/" + index;
@@ -122,9 +131,8 @@ class User extends Component {
         return (
 
             <div >
-                <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
-                    添加
-                    </Button>
+
+                <UserAdd parent={this} />
                 <div style={{ marginBottom: 16 }}>
                     <Button type="primary" onClick={this.deleteBatchUser} >
                         <DeleteTwoTone />批量删除
