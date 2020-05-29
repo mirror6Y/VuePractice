@@ -6,7 +6,6 @@ import { Modal, Button } from 'antd'
 class UserDeatil extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props)
         this.state = {
             visible: false
         }
