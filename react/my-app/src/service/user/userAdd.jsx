@@ -1,7 +1,6 @@
 import React from 'react';
-import { Form, Input, Button, Select, Modal, Radio } from 'antd'
+import { Form, Input, Select, Modal, Radio } from 'antd'
 import axios from 'axios';
-import qs from 'qs'
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -10,29 +9,17 @@ class UserAdd extends React.Component {
 
     formRef = React.createRef();
 
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-
-        };
-
-    }
-
-
+    state = {}
 
     handleOk = () => {
 
-        console.log(this.formRef.current.getFieldsValue())
-
         let user = this.formRef.current.getFieldsValue();
-
+        console.log( user)
         const url = "/system/user/addUser";
         const _this = this;
         axios.post(url,
             {
-                data: qs.stringify(user)
+                data: user
             })
             .then(function (response) {
                 _this.props.toggleVisible(false)
@@ -50,7 +37,6 @@ class UserAdd extends React.Component {
 
     render() {
 
-
         const { visible } = this.props
 
         const formItemLayout = {
@@ -59,7 +45,6 @@ class UserAdd extends React.Component {
         };
 
         return (
-
 
             <Modal visible={visible} title="添加用户" onCancel={this.handleCancel} onOk={this.handleOk}>
 
