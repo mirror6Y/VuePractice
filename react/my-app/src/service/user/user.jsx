@@ -14,7 +14,10 @@ class User extends Component {
         usersLoading: false,
         selectedRowKeys: [],
         //添加模态框
-        isShowCreateModal: false
+        isShowCreateModal: false,
+        //详情模态框
+        isShowInfoModal: false,
+        userInfo: {}, 
     };
 
     componentDidMount() {
@@ -59,6 +62,22 @@ class User extends Component {
     }
 
 
+    showInfoModal = (record) => {
+        console.log("info" + record);
+        this.setState({
+            isShowInfoModal: true,
+            userInfo: record
+        })
+    }
+
+    closeInfoModal = () => {
+        this.setState({
+            isShowInfoModal: false,
+            userInfo: {}
+        })
+    }
+
+
     onSelectChange = selectedRowKeys => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
@@ -66,7 +85,7 @@ class User extends Component {
 
     render() {
 
-        const { selectedRowKeys, isShowCreateModal } = this.state;
+        const {userInfo, isShowInfoModal, selectedRowKeys, isShowCreateModal } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -83,18 +102,20 @@ class User extends Component {
             {
                 title: '操作', dataIndex: '', key: 'operation', width: '32%', render: (text, record, index) => (
                     <div style={{ textAlign: 'left' }}>
-                        <span>
-                            <UserDetail className="user_details" pass={record} />
-                            <Popconfirm title="删除不可恢复，你确定要删除吗?" >
+                        {/* <span> */}
+                            {/* <UserDetail className="user_details" pass={record} /> */}
+                            {/* <Popconfirm title="删除不可恢复，你确定要删除吗?" >
                                 <a title="用户删除" className="mgl10" onClick={this.onDelete.bind(this, index)}>
                                 </a>
-                            </Popconfirm>
-                            {/* <Button size="small" onClick={() => this.editHandle(record)}>编辑</Button> */}
+                            </Popconfirm> */}
+                            <Button size="smallButton" onClick={() => this.showInfoModal(record)}>详情</Button>
+                            <span className="ant-divider" />   
+                            <Button size="smallButton" >编辑</Button>
                             <Popconfirm title="确定要删除吗？" onConfirm={() => this.onDelete(record.id)}>
                                 <Button size="smallButton" >删除</Button>
                             </Popconfirm>
-                            <span className="ant-divider" />
-                        </span>
+                             
+                        {/* </span> */}
                     </div>
                 )
             },
@@ -114,6 +135,7 @@ class User extends Component {
                     dataSource={this.state.users}
                 />
                 <UserAdd visible={isShowCreateModal} toggleVisible={this.toggleShowCreateModal} />
+                <UserDetail visible={isShowInfoModal}  userInfo={userInfo} onCancel={this.closeInfoModal}/>
             </div>
             // onRegister={this.getUsers}
 
