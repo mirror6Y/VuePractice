@@ -11,10 +11,24 @@ class UserAdd extends React.Component {
 
     state = {}
 
+
+    componentDidMount() {
+        var data = this.props.updateInfo;
+console.log(data)
+        if (data != "add") {
+            // const [form] = Form.useForm();
+            // React.useEffect(() => {
+            //     this.formRef.setFieldsValue({
+            //         data
+            //     });
+            // }, []);
+        }
+    }
+
     handleOk = () => {
 
         let user = this.formRef.current.getFieldsValue();
-        console.log( user)
+        console.log(user)
         const url = "/system/user/addUser";
         const _this = this;
         axios.post(url,
@@ -22,7 +36,8 @@ class UserAdd extends React.Component {
                 data: user
             })
             .then(function (response) {
-                _this.props.toggleVisible(false)
+                _this.props.toggleVisible(false);
+                _this.props.getUserList();
             })
             .catch(function (error) {
                 console.log(error);
@@ -46,7 +61,7 @@ class UserAdd extends React.Component {
 
         return (
 
-            <Modal visible={visible} title="添加用户" onCancel={this.handleCancel} onOk={this.handleOk}>
+            <Modal visible={visible} title="添加用户" onCancel={this.props.onCancel} onOk={this.handleOk}>
 
                 <Form ref={this.formRef} {...formItemLayout} >
 
