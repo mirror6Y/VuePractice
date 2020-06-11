@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import UserDetail from './UserDetail'
 import UserAdd from './UserAdd'
-import { formatDate } from '../../util/dateUtil'
+import { formatDate } from '../../utils/dateUtil'
 
 
 

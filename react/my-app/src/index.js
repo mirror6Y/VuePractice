@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import User from './service/user/user'
+// import User from './service/user/user'
 import 'antd/dist/antd.css';
 import * as serviceWorker from './serviceWorker';
+import App from './App'
+
 
 ReactDOM.render(
-  <User />,
+  <App />,
   document.getElementById('root')
 );
 
