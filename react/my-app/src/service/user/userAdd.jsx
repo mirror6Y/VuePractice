@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Select, Modal, Radio } from 'antd'
+import { Form, Input, Select, Modal, Radio, notification } from 'antd'
 import axios from 'axios';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -14,7 +14,7 @@ class UserAdd extends React.Component {
 
     componentDidMount() {
         var data = this.props.updateInfo;
-console.log(data)
+        console.log(data)
         if (data != "add") {
             // const [form] = Form.useForm();
             // React.useEffect(() => {
@@ -36,8 +36,16 @@ console.log(data)
                 data: user
             })
             .then(function (response) {
-                _this.props.toggleVisible(false);
-                _this.props.getUserList();
+
+                if (response.status === 200) {
+                    notification.success({
+                        duration: 1,
+                        message: '提示',
+                        description: response.data.msg
+                    })
+                    _this.props.toggleVisible(false);
+                    _this.props.onRegister()
+                }
             })
             .catch(function (error) {
                 console.log(error);
@@ -61,7 +69,8 @@ console.log(data)
 
         return (
 
-            <Modal visible={visible} title="添加用户" onCancel={this.props.onCancel} onOk={this.handleOk}>
+            <Modal visible={visible} title="添加用户" okText='确定'
+                cancelText='取消' onOk={this.handleOk} onCancel={this.props.onCancel} >
 
                 <Form ref={this.formRef} {...formItemLayout} >
 

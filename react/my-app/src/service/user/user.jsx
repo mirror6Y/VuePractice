@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Button, Space, Modal,  notification } from 'antd';
-import { DeleteTwoTone, ExclamationCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Table, Button, Space, Modal, notification } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 import UserDetail from './UserDetail'
@@ -61,8 +61,8 @@ class User extends Component {
                         if (response.status === 200) {
                             notification.success({
                                 duration: 1,
-                                message: "删除成功",
-                                description: response.data.message
+                                message: '提示',
+                                description: response.data.msg
                             })
 
                             _this.getUserList()
@@ -159,7 +159,7 @@ class User extends Component {
                     columns={columns}
                     dataSource={this.state.users}
                 />
-                <UserAdd visible={isShowCreateModal} updateInfo={updateInfo} toggleVisible={this.toggleShowCreateModal} onCancel={this.closeInfoModal} />
+                <UserAdd visible={isShowCreateModal} updateInfo={updateInfo} onRegister={this.getUserList} toggleVisible={this.toggleShowCreateModal} onCancel={this.closeInfoModal} />
                 <UserDetail visible={isShowInfoModal} userInfo={userInfo} onCancel={this.closeInfoModal} />
             </div>
             // onRegister={this.getUsers}

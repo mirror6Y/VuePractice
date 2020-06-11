@@ -13,8 +13,8 @@ class UserDeatil extends React.Component {
 
         return (
             <div>
-                <Modal title="详情" visible={this.props.visible}
-                    onOk={this.props.onCancel} onCancel={this.props.onCancel}>
+                <Modal visible={this.props.visible} title="详情" okText='确定'
+                    cancelText='取消' onOk={this.props.onCancel} onCancel={this.props.onCancel}>
                     <p>账号：   {this.props.userInfo.account}</p>
                     <p>姓名：   {this.props.userInfo.name}</p>
                     <p>性别：    {this.props.userInfo.gender}</p>
