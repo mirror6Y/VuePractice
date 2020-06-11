@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Button, Input, Popconfirm } from 'antd';
-import { DeleteTwoTone } from '@ant-design/icons';
+import { Table, Button, Space, Modal,  notification } from 'antd';
+import { DeleteTwoTone, ExclamationCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 import UserDetail from './UserDetail'
@@ -46,11 +46,33 @@ class User extends Component {
     onDelete(index) {
         console.log("deleteUser:" + index)
         const url = "/system/user/deleteUser/" + index;
-        axios.delete(url)
-            .then(() => { this.getUserList() })
-            .catch(function (error) {
-                console.log(error);
-            })
+        const _this = this;
+
+        Modal.confirm({
+            title: '提示',
+            okText: '确定',
+            cancelText: '取消',
+            icon: <QuestionCircleOutlined />,
+            content: '您确定删除此条内容吗？',
+            onOk() {
+                axios.delete(url)
+                    .then((response) => {
+                        console.log(response)
+                        if (response.status === 200) {
+                            notification.success({
+                                duration: 1,
+                                message: "删除成功",
+                                description: response.data.message
+                            })
+
+                            _this.getUserList()
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        })
     }
 
     batchDeletion = () => {
@@ -112,22 +134,13 @@ class User extends Component {
                 }
             },
             {
-                title: '操作', dataIndex: '', key: 'operation', width: '32%', render: (text, record, index) => (
-                    <div style={{ textAlign: 'left' }}>
-                        {/* <span> */}
-                        {/* <UserDetail className="user_details" pass={record} /> */}
-                        {/* <Popconfirm title="删除不可恢复，你确定要删除吗?" >
-                                <a title="用户删除" className="mgl10" onClick={this.onDelete.bind(this, index)}>
-                                </a>
-                            </Popconfirm> */}
-                        <Button size="smallButton" onClick={() => this.showInfoModal(record)}>详情</Button>
-                        <span className="ant-divider" />
-                        <Button size="smallButton" onClick={() => this.toggleShowCreateModal(true, record)}>编辑</Button>
-                        <Popconfirm title="确定要删除吗？" onConfirm={() => this.onDelete(record.id)}>
-                            <Button size="smallButton" >删除</Button>
-                        </Popconfirm>
-
-                        {/* </span> */}
+                title: '操作', dataIndex: '', key: 'operation', width: '32%', render: (record) => (
+                    <div>
+                        <Space>
+                            <Button onClick={() => this.showInfoModal(record)}>详情</Button>
+                            <Button onClick={() => this.toggleShowCreateModal(true, record)}>编辑</Button>
+                            <Button type='danger' onClick={() => this.onDelete(record.id)}>删除</Button>
+                        </Space>
                     </div>
                 )
             },
