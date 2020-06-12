@@ -9,12 +9,13 @@ class UserAdd extends React.Component {
 
     formRef = React.createRef();
 
+
     state = {}
 
 
     componentDidMount() {
         var data = this.props.updateInfo;
-        console.log(data)
+        console.log("add:" + data)
         if (data != "add") {
             // const [form] = Form.useForm();
             // React.useEffect(() => {
@@ -22,6 +23,8 @@ class UserAdd extends React.Component {
             //         data
             //     });
             // }, []);
+console.log(this.formRef)
+            
         }
     }
 
