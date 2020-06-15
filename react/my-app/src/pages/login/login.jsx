@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
-import './login.less';
-import logo from './images/logo.jpg';
 import { Form, Input, Button, Checkbox } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import Login from './login'
+import './login.less';
+import logo from './images/log.jpg';
 
-const layout = {
-    labelCol: {
-        span: 8,
-    },
-    wrapperCol: {
-        span: 16,
-    },
-};
-const tailLayout = {
-    wrapperCol: {
-        offset: 8,
-        span: 16,
-    },
-};
 
 class login extends Component {
 
+    formRef = React.createRef();
 
+    onFinish = values => {
+        console.log(values);
+    };
+
+    onFinishFailed = errorInfo => {
+        console.log('Failed:', errorInfo);
+    };
     render() {
+
+
         return (
             <div className="login">
                 <header className="login-header">
@@ -31,48 +29,51 @@ class login extends Component {
                 <section className="login-content">
                     <h2>用户登录</h2>
                     <Form
-                        {...layout}
-                        name="basic"
+                        ref={this.formRef}
+                        name="normal_login"
+                        className="login-form"
                         initialValues={{
                             remember: true,
                         }}
-                    // onFinish={onFinish}
-                    // onFinishFailed={onFinishFailed}
+                        onFinish={this.onFinish}
+                        onFinishFailed={this.onFinishFailed}
                     >
                         <Form.Item
-                            label="账号"
                             name="username"
                             rules={[
                                 {
                                     required: true,
-                                    message: '请输入账号!',
+                                    message: '请输入账号!'
                                 },
                             ]}
                         >
-                            <Input />
+                            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="账号" />
                         </Form.Item>
-
                         <Form.Item
-                            label="密码"
                             name="password"
                             rules={[
                                 {
                                     required: true,
-                                    message: '请输入密码!',
+                                    message: '请输入密码!'
                                 },
                             ]}
                         >
-                            <Input.Password />
+                            <Input
+                                prefix={<LockOutlined className="site-form-item-icon" />}
+                                type="password"
+                                placeholder="密码"
+                            />
+                        </Form.Item>
+                        <Form.Item>
+                            <Form.Item name="remember" valuePropName="checked" noStyle>
+                                <Checkbox>记住我</Checkbox>
+                            </Form.Item>
+
+                            <a className="login-form-forgot" href="">忘记密码</a>
                         </Form.Item>
 
-                        <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-                            <Checkbox>Remember me</Checkbox>
-                        </Form.Item>
-
-                        <Form.Item {...tailLayout}>
-                            <Button type="primary" htmlType="submit">
-                                Submit
-                            </Button>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="login-form-button">登录</Button>
                         </Form.Item>
                     </Form>
                 </section>
