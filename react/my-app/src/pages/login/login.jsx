@@ -1,17 +1,30 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import Login from './login'
+// import Login from './login'
 import './login.less';
 import logo from './images/log.jpg';
+import { reqLogin } from '../../api/api'
 
 
 class login extends Component {
 
     formRef = React.createRef();
 
-    onFinish = values => {
+    onFinish = async values => {
         console.log(values);
+        const { username, password } = values;
+        // try {
+        // const response = await reqLogin(username, password);
+        // const result = response.data;
+        // if (result.status === 200) {
+        //     message.success("登录成功");
+        //     this.props.history.replace('/');
+        // }else{
+        //     message.error("登录失败");
+        // }
+        this.props.history.replace('/');
+
     };
 
     onFinishFailed = errorInfo => {
