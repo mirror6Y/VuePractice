@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+// import { Redirect } from 'react-router-dom'
 import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 // import Login from './login'
 import './login.less';
 import logo from './images/log.jpg';
-import { reqLogin } from '../../api/api'
+// import { reqLogin } from '../../api/api'
+// import memoryUtil from '../../utils/memoryUtil'
+// import storageUtil from '../../utils/storageUtil'
 
 
 class login extends Component {
@@ -13,25 +16,31 @@ class login extends Component {
 
     onFinish = async values => {
         console.log(values);
-        const { username, password } = values;
-        // try {
-        // const response = await reqLogin(username, password);
-        // const result = response.data;
+        // const { username, password } = values;
+
+        // const result = await reqLogin(username, password);
         // if (result.status === 200) {
         //     message.success("登录成功");
+        //     const user = result.data;
+        //     memoryUtil.user = user;
+        //     storageUtil.setUser(user);
         //     this.props.history.replace('/');
-        // }else{
+        // } else {
         //     message.error("登录失败");
         // }
+        message.success("登录成功");
         this.props.history.replace('/');
 
-    };
+    }
 
     onFinishFailed = errorInfo => {
         console.log('Failed:', errorInfo);
     };
     render() {
-
+        // const user = memoryUtil.user;
+        // if (user && user.id) {
+        //     return <Redirect to='./loi' />
+        // }
 
         return (
             <div className="login">
