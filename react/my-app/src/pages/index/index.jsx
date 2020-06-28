@@ -9,10 +9,10 @@ const { Footer, Sider, Content } = Layout;
 
 class index extends Component {
     render() {
-        // const user = memoryUtil.user;
-        // if (!user || !user.id) {
-        //     return <Redirect to='/login' />
-        // }
+        const user = memoryUtil.user;
+        if (!user || !user.id) {
+            return <Redirect to='/login' />
+        }
         return (
             <Layout style={{ height: '100%' }}>
                 <Sider>
