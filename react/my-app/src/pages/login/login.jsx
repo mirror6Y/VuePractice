@@ -4,7 +4,7 @@ import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 // import Login from './login'
 import './login.less';
-import logo from './images/log.jpg';
+import logo from '../../assets/images/log.jpg';
 import { reqLogin } from '../../api/api'
 import memoryUtil from '../../utils/memoryUtil'
 import storageUtil from '../../utils/storageUtil'
