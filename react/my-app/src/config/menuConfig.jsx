@@ -8,7 +8,7 @@ import React from 'react';
 const menuList=[
     {
         title:"首页",
-        key:"home",
+        key:"/home",
         url:"/home",
         icon:<PieChartOutlined />
     },
@@ -19,13 +19,13 @@ const menuList=[
         children:[
             {
                 title:"用户管理",
-                key:"user",
+                key:"/system/user",
                 url:"/system/user",
                 icon:""
             },
             {
                 title:"角色管理",
-                key:"role",
+                key:"/system/role",
                 url:"/system/role",
                 icon:""
             }

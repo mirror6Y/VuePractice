@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { Menu } from 'antd';
 import './nav.less';
 import logo from '../../assets/images/log.jpg';
@@ -13,9 +13,10 @@ class Nav extends Component {
         collapsed: false,
     };
 
-    getMenuNodes = (menuList) => {
+    //map+递归
+    getMenuNodes_map = (menuList) => {
         return menuList.map(item => {
-            if (!item.childern) {
+            if (!item.children) {
                 return (
                     <Menu.Item key={item.key} >
                         {item.icon}
@@ -25,9 +26,7 @@ class Nav extends Component {
             } else {
                 return (
                     <SubMenu key={item.key} icon={item.icon} title={item.title}>
-                        {/* <Menu.Item key={item.key}><Link to={item.url}>{item.title}</Link></Menu.Item>
-                        <Menu.Item key={item.key}><Link to={item.url}>{item.title}</Link></Menu.Item> */}
-                        {this.getMenuNodes(item.childern)}
+                        {this.getMenuNodes_map(item.children)}
                     </SubMenu>
                 )
             }
@@ -35,7 +34,51 @@ class Nav extends Component {
         })
     }
 
+    //reduce+递归
+    getMenuNodes_reduce = (menuList) => {
+
+        const path = this.props.location.pathname;
+
+        return menuList.reduce((pre, item) => {
+            //向pre添加<Menu.Item>
+            //向pre添加<SubMenu>
+            if (!item.children) {
+                pre.push(
+                    (
+                        <Menu.Item key={item.key} >
+                            {item.icon}
+                            <Link to={item.url}>{item.title}</Link>
+                        </Menu.Item>
+                    )
+                )
+            } else {
+                //查找一个与当前路径匹配的子item
+                const cItem = item.children.find(cItem => cItem.key === path)
+                //如果存在，说明当前item的子列表需要打开
+                if (cItem) {
+                    this.openKey = item.key;
+                }
+                pre.push(
+                    (
+                        <SubMenu key={item.key} icon={item.icon} title={item.title}>
+                            {this.getMenuNodes_map(item.children)}
+                        </SubMenu>
+                    )
+                )
+            }
+            return pre;
+        }, [])
+    }
+
+    componentWillMount() {
+        this.menuNodes = this.getMenuNodes_reduce(menuList);
+
+    }
+
     render() {
+        const path = this.props.location.pathname;
+        const openKey = this.openKey;
+        console.log(openKey)
         return (
             <div>
                 <div className="nav">
@@ -45,12 +88,13 @@ class Nav extends Component {
                     </Link>
 
                     <Menu
-                        defaultSelectedKeys={['1']}
+                        selectedKeys={[path]}
+                        defaultOpenKeys={[openKey]}
                         mode="inline"
                         theme="dark"
                     >
                         {
-                            this.getMenuNodes(menuList)
+                            this.menuNodes
                         }
 
 
@@ -74,4 +118,7 @@ class Nav extends Component {
     }
 }
 
-export default Nav
+//withRouter高阶组件：包装非路由组件，返回一个新的组件。
+//新的组件向非路由组件传递3个属性：history、location、match
+export default withRouter(Nav)
+// export default Nav
