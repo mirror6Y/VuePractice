@@ -1,55 +1,59 @@
 import {
-    AppstoreOutlined,
-    PieChartOutlined,
-    MailOutlined,
+    DashboardOutlined,
+    SettingOutlined,
+    UserOutlined,
+    TeamOutlined,
+    TableOutlined,
+    SolutionOutlined,
+    Loading3QuartersOutlined
 } from '@ant-design/icons';
 import React from 'react';
 
-const menuList=[
+const menuList = [
     {
-        title:"首页",
-        key:"/home",
-        url:"/home",
-        icon:<PieChartOutlined />
+        title: "首页",
+        key: "/home",
+        url: "/home",
+        icon: <DashboardOutlined />
     },
     {
-        title:"系统信息",
-        key:"system",
-        icon:<MailOutlined />,
-        children:[
+        title: "系统信息",
+        key: "system",
+        icon: <SettingOutlined />,
+        children: [
             {
-                title:"用户管理",
-                key:"/system/user",
-                url:"/system/user",
-                icon:""
+                title: "用户管理",
+                key: "/system/user",
+                url: "/system/user",
+                icon: <UserOutlined />
             },
             {
-                title:"角色管理",
-                key:"/system/role",
-                url:"/system/role",
-                icon:""
+                title: "角色管理",
+                key: "/system/role",
+                url: "/system/role",
+                icon: <TeamOutlined />
             }
         ]
     },
     {
-        title:"基础信息",
-        key:"basic",
-        icon:<AppstoreOutlined />,
-        children:[
+        title: "基础信息",
+        key: "basic",
+        icon: <TableOutlined />,
+        children: [
             {
-                title:"教师信息",
-                key:"teacher",
-                url:"",
-                icon:""
+                title: "教师信息",
+                key: "teacher",
+                url: "/basic/teacher",
+                icon: <Loading3QuartersOutlined />
             },
             {
-                title:"学生信息",
-                key:"student",
-                url:"",
-                icon:""
+                title: "学生信息",
+                key: "student",
+                url: "/basic/student",
+                icon: <Loading3QuartersOutlined />
             }
         ]
     }
 ]
 
-export default  menuList
+export default menuList
