@@ -25,4 +25,5 @@ export const reqWeather = (cityCode) => {
 
 }
 
-// reqWeather();
+// 角色列表
+export const reqRoleList=()=>ajax('/system/role/getRoleList', 'GET')

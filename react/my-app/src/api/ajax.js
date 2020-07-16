@@ -17,6 +17,7 @@ export default function ajax(url, data, type) {
         }).catch(error => {
             reject(error);
             message.error("请求出错：" + error.msg);
+            console.log(error.msg)
         })
     })
 
