@@ -25,5 +25,12 @@ export const reqWeather = (cityCode) => {
 
 }
 
+// 用户列表
+export const reqUserList=()=>ajax('/system/user/getUserList', null,'GET')
+
+//添加用户
+export const reqUserAdd=(data)=>ajax('/system/user/addUser', {data},'POST')
+
+
 // 角色列表
-export const reqRoleList=()=>ajax('/system/role/getRoleList', 'GET')
+export const reqRoleList=()=>ajax('/system/role/getRoleList', null,'GET')

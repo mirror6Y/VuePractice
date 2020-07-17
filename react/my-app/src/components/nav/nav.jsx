@@ -78,7 +78,7 @@ class Nav extends Component {
     render() {
         const path = this.props.location.pathname;
         const openKey = this.openKey;
-        console.log(openKey)
+         
         return (
             <div>
                 <div className="nav">

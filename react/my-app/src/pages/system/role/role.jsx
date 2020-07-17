@@ -79,22 +79,7 @@ class Role extends Component {
                 <Button type="primary">新增</Button>
             </span>
         )
-
-        const data = [
-            {
-                key: '1',
-                name: 'John Brown',
-                age: 32,
-                address: 'New York Park',
-            },
-            {
-                key: '2',
-                name: 'Jim Green',
-                age: 40,
-                address: 'London Park',
-            },
-        ];
-
+        
         return (
             <Card title={title}>
                 <Table
