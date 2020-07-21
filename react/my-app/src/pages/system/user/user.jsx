@@ -66,7 +66,7 @@ class User extends Component {
 
     getUserList = async () => {
         const result = await reqUserList();
-        console.log("result:" + result.data.records)
+        console.log("getUserList:" + result.data.records)
         if (result.code === 200) {
             const data = result.data.records;
             this.setState({ userList: data })
@@ -83,6 +83,7 @@ class User extends Component {
 
     addUser = async () => {
         const data = this.child.current.addRef.current.getFieldsValue();
+        console.log(data)
         const result = await reqUserAdd(data);
         if (result.code === 200) {
             this.setState({ isShowAdd: false })

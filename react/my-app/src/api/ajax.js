@@ -3,13 +3,15 @@ import axios from 'axios'
 import { message } from 'antd';
 export default function ajax(url, data, type) {
     let promise;
+    axios.defaults.headers.post['Content-Type'] = 'text/plain';
+
     return new Promise((resolve, reject) => {
         if (type === "GET") {
             promise = axios.get(url, {
                 params: data
             })
         } else {
-            promise = axios.post(url, data)
+            promise = axios.post(url, JSON.stringify(data))
         }
 
         promise.then(response => {

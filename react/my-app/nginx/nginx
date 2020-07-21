@@ -33,7 +33,6 @@ http {
     #gzip  on;
 
     server {
-		#默认端口80
         listen       3001;
         server_name  localhost;
 
@@ -42,8 +41,7 @@ http {
         #access_log  logs/host.access.log  main;
 
         location / {
-	
-            root   F:/Agithub/VuePractice/react/my-app/build;
+            root   D:/AGit/VuePractice/react/my-app/build;
             index  index.html index.htm;
         }
 
@@ -53,7 +51,7 @@ http {
             proxy_set_header X-Forwarded-Proto $scheme;
             proxy_set_header X-Forwarded-Port $server_port;
         }
-        
+
         #error_page  404              /404.html;
 
         # redirect server error pages to the static page /50x.html
@@ -85,16 +83,16 @@ http {
         #location ~ /\.ht {
         #    deny  all;
         #}
-
     }
 
 
     # another virtual host using mix of IP-, name-, and port-based configuration
     #
     #server {
-    #    listen       3000;
-    #    server_name  localhost;
-    # 
+    #    listen       8000;
+    #    listen       somename:8080;
+    #    server_name  somename  alias  another.alias;
+
     #    location / {
     #        root   html;
     #        index  index.html index.htm;
