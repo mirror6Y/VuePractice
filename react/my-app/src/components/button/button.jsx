@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './button.less'
 
 //外形像链接的按钮

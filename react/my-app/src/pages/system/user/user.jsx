@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Card, Button, Table, Modal, notification, Space } from 'antd'
-import { QuestionCircleOutlined } from '@ant-design/icons';
+// import { QuestionCircleOutlined } from '@ant-design/icons';
 
+// import LinkButton from '../../../components/button'
 import { reqUserList, reqUserAdd, reqUserDel } from '../../../api/api.js'
 import UserAdd from './userAdd'
+import UserEdit from './userEdit'
 
 class User extends Component {
 
@@ -29,7 +31,8 @@ class User extends Component {
         ],
         //复选框 选择的用户
         user: {},
-        isShowAdd: false
+        // 0 不显示添加和修改组件 1 显示添加 2显示修改
+        showStatus: 0
     }
 
     initColumn = () => {
@@ -62,19 +65,19 @@ class User extends Component {
                 title: '创建时间',
                 dataIndex: 'gmtCreate',
             },
-            // {
-            //     title: '操作',
-            //     dataIndex: 'operation',
-            //     render: (record) => (
-            //         <div>
-            //             <Space>
-            //                 {/* <Button onClick={() => this.showInfoModal(record)}>详情</Button>
-            //                 <Button onClick={() => this.toggleShowCreateModal(true, record)}>编辑</Button> */}
-            //                 <Button type='danger' onClick={() => this.deleteUser(record.id)}>删除</Button>
-            //             </Space>
-            //         </div>
-            //     )
-            // }
+            {
+                title: '操作',
+                render: (user) => (
+                    <span>
+                        <Button onClick={() => this.showEdit(user)}>编辑</Button>
+                        <Space>
+                            {/* <Button onClick={() => this.showInfoModal(record)}>详情</Button>
+                            <Button onClick={() => this.toggleShowCreateModal(true, record)}>编辑</Button> */}
+                            <Button type='danger' onClick={() => this.deleteUser(user.id)}>删除</Button>
+                        </Space>
+                    </span>
+                )
+            }
         ]
     }
 
@@ -95,12 +98,37 @@ class User extends Component {
         }
     }
 
+
+    handleCancel = () => {
+        this.setState({
+            showStatus: 0
+        })
+    }
+
+    showAdd = () => {
+        this.setState({
+            showStatus: 1
+        })
+    }
+
+    showEdit = (user) => {
+        //保存对象
+        this.editData = user;
+        console.log("edit:" + JSON.stringify(this.editData))
+
+
+        this.setState({
+            showStatus: 2
+        })
+    }
+
+
     addUser = async () => {
         const data = this.child.current.addRef.current.getFieldsValue();
-        console.log("addUser" + data)
+        console.log("addUser：" + data)
         const result = await reqUserAdd(data);
         if (result.code === 200) {
-            this.setState({ isShowAdd: false })
+            this.setState({ showStatus: 0 })
             notification.success({
                 duration: 1,
                 message: '提示',
@@ -159,10 +187,12 @@ class User extends Component {
 
     render() {
 
-        const { userList, user, isShowAdd } = this.state;
+        const editData = this.editData;
+        const { userList, user, showStatus } = this.state;
+
         const title = (
             <span>
-                <Button type="primary" onClick={() => { this.setState({ isShowAdd: true }) }}>新增</Button>
+                <Button type="primary" onClick={this.showAdd}>新增</Button>
                 <Button type="primary" disabled={!user.id}>批量删除</Button>
             </span>
         )
@@ -174,14 +204,15 @@ class User extends Component {
                     columns={this.columns}
                     onRow={this.onRow}
                     dataSource={userList} />
-                <Modal visible={isShowAdd} title="添加用户" okText='确定'
-                    cancelText='取消' onOk={this.addUser} onCancel={() => {
-                        this.setState({ isShowAdd: false })
-                        // this.props.form.resetFields()
-                    }} >
+                <Modal visible={showStatus === 1} title="添加用户" okText='确定'
+                    cancelText='取消' onOk={this.addUser} onCancel={this.handleCancel} >
                     <UserAdd ref={this.child}></UserAdd>
                 </Modal>
-            </Card>
+                <Modal visible={showStatus === 2} title="编辑用户" okText='确定'
+                    cancelText='取消' onOk={this.editUser} onCancel={this.handleCancel} >
+                    <UserEdit userData={editData}></UserEdit>
+                </Modal>
+            </Card >
         );
     }
 }

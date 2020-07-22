@@ -72,7 +72,6 @@ class Nav extends Component {
 
     componentWillMount() {
         this.menuNodes = this.getMenuNodes_reduce(menuList);
-
     }
 
     render() {

@@ -4,7 +4,6 @@ import './index.css';
 import 'antd/dist/antd.css';
 import * as serviceWorker from './serviceWorker';
 import App from './App'
-import User from './pages/service/user/user'
 import memoryUtil from './utils/memoryUtil'
 import storageUtil from './utils/storageUtil'
 

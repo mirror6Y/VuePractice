@@ -4,7 +4,7 @@ import {
     UserOutlined,
     TeamOutlined,
     TableOutlined,
-    SolutionOutlined,
+    // SolutionOutlined,
     Loading3QuartersOutlined
 } from '@ant-design/icons';
 import React from 'react';

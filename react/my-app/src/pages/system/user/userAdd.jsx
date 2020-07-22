@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Select, Modal, Radio, notification } from 'antd'
+import { Form, Input, Select, Radio } from 'antd'
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -8,6 +8,7 @@ const Option = Select.Option;
 class UserAdd extends Component {
 
     addRef = React.createRef();
+
 
     render() {
 
