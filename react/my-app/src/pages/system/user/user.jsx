@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Card, Button, Table, Modal, notification } from 'antd'
+import { Card, Button, Table, Modal, notification, Space } from 'antd'
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
-import { reqUserList, reqUserAdd } from '../../../api/api.js'
+import { reqUserList, reqUserAdd, reqUserDel } from '../../../api/api.js'
 import UserAdd from './userAdd'
 
 class User extends Component {
@@ -11,20 +12,20 @@ class User extends Component {
 
     state = {
         userList: [
-            {
-                key: '1',
-                account: '1',
-                name: 'John Brown',
-                college: 32,
-                address: 'New York Park',
-            },
-            {
-                key: '2',
-                account: '2',
-                name: 'Jim Green',
-                college: 40,
-                address: 'London Park',
-            },
+            // {
+            //     key: '1',
+            //     account: '1',
+            //     name: 'John Brown',
+            //     college: 32,
+            //     address: 'New York Park',
+            // },
+            // {
+            //     key: '2',
+            //     account: '2',
+            //     name: 'Jim Green',
+            //     college: 40,
+            //     address: 'London Park',
+            // },
         ],
         //复选框 选择的用户
         user: {},
@@ -60,7 +61,20 @@ class User extends Component {
             {
                 title: '创建时间',
                 dataIndex: 'gmtCreate',
-            }
+            },
+            // {
+            //     title: '操作',
+            //     dataIndex: 'operation',
+            //     render: (record) => (
+            //         <div>
+            //             <Space>
+            //                 {/* <Button onClick={() => this.showInfoModal(record)}>详情</Button>
+            //                 <Button onClick={() => this.toggleShowCreateModal(true, record)}>编辑</Button> */}
+            //                 <Button type='danger' onClick={() => this.deleteUser(record.id)}>删除</Button>
+            //             </Space>
+            //         </div>
+            //     )
+            // }
         ]
     }
 
@@ -83,7 +97,7 @@ class User extends Component {
 
     addUser = async () => {
         const data = this.child.current.addRef.current.getFieldsValue();
-        console.log(data)
+        console.log("addUser" + data)
         const result = await reqUserAdd(data);
         if (result.code === 200) {
             this.setState({ isShowAdd: false })
@@ -102,6 +116,38 @@ class User extends Component {
             })
         }
     }
+
+    // deleteUser = (index) => {
+
+    //     Modal.confirm({
+    //         title: '提示',
+    //         okText: '确定',
+    //         cancelText: '取消',
+    //         icon: <QuestionCircleOutlined />,
+    //         content: '您确定删除此条内容吗？',
+    //         async onOk() {
+
+    //             const result = await reqUserDel(index);
+    //             if (result.code === 200) {
+
+    //                 notification.success({
+    //                     duration: 1,
+    //                     message: '提示',
+    //                     description: result.msg
+    //                 });
+    //                 this.getUserList();
+
+    //             } else {
+    //                 notification.error({
+    //                     duration: 1,
+    //                     message: '提示',
+    //                     description: result.msg
+    //                 })
+    //             }
+
+    //         }
+    //     })
+    // }
 
     componentWillMount() {
         this.initColumn();
