@@ -29,7 +29,10 @@ export const reqWeather = (cityCode) => {
 export const reqUserList=()=>ajax('/system/user/getUserList', null,'GET')
 
 //添加用户
-export const reqUserAdd=(data)=>ajax('/system/user/addUser', {data},'POST')
+export const reqUserAdd=(data)=>ajax('/system/user/addUser', data,'POST')
+
+//删除用户
+export const reqUserDel=(data)=>ajax('/system/user/deleteUser'+data,null,'POST')
 
 
 // 角色列表
