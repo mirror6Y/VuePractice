@@ -32,7 +32,10 @@ export const reqUserList=()=>ajax('/system/user/getUserList', null,'GET')
 export const reqUserAdd=(data)=>ajax('/system/user/addUser', {data},'POST')
 
 //删除用户
-export const reqUserDel=(data)=>ajax('/system/user/deleteUser'+data,null,'POST')
+export const reqUserDel=(data)=>ajax('/system/user/deleteUser/'+data,null,'DELETE')
+
+//编辑用户
+export const reqUserEdit=(data)=>ajax('/system/user/updateUser', {data},'PUT')
 
 
 // 角色列表

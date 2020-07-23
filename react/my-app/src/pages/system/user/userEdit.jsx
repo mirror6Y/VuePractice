@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Select, Radio } from 'antd'
+import { Form, Input, Select, Radio, Checkbox, Row, Col } from 'antd'
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -7,18 +7,14 @@ class UserEdit extends Component {
 
     editRef = React.createRef();
 
-    componentDidMount() {
+    componentDidUpdate() {
+        console.log("几次啊")
         const { userData } = this.props;
-        console.log("edit:" + { userData })
         this.editRef.current.setFieldsValue(userData);
-
+        console.log({ userData })
     }
 
     render() {
-
-        // const { userData } = this.props;
-        // console.log("userData:"+userData)
-
 
         const formItemLayout = {
             labelCol: { span: 6 },
@@ -27,7 +23,11 @@ class UserEdit extends Component {
 
         return (
 
-            <Form {...formItemLayout} ref={this.editRef}  >
+            <Form {...formItemLayout} ref={this.editRef} >
+
+                <FormItem name="id" label="主键">
+                    <Input />
+                </FormItem>
 
                 <FormItem name="account" label="账号" rules={[
                     {
@@ -62,14 +62,51 @@ class UserEdit extends Component {
                     <Input placeholder="请输入电子邮箱" />
                 </FormItem>
 
-                <FormItem name="select" label="角色" hasFeedback
+                <Form.Item name="roleIds" label="角色">
+                    <Checkbox.Group>
+                        <Row>
+                            <Col span={8}>
+                                <Checkbox
+                                    value="1"
+                                    style={{
+                                        lineHeight: '32px',
+                                    }}
+                                >
+                                    普通角色
+                                </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                                <Checkbox
+                                    value="2"
+                                    style={{
+                                        lineHeight: '32px',
+                                    }}
+                                >
+                                    学生管理员
+                                </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                                <Checkbox
+                                    value="3"
+                                    style={{
+                                        lineHeight: '32px',
+                                    }}
+                                >
+                                    教师管理员
+                                </Checkbox>
+                            </Col>
+                        </Row>
+                    </Checkbox.Group>
+                </Form.Item>
+
+                {/* <FormItem name="roleIds" label="角色" hasFeedback
                     rules={[{ required: true, message: '请选择角色!' }]}
                 >
                     <Select placeholder="请选择角色">
                         <Option value="1">普通用户</Option>
                         <Option value="2">管理员</Option>
                     </Select>
-                </FormItem>
+                </FormItem> */}
 
             </Form>
         );

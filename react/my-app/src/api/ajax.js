@@ -12,7 +12,9 @@ export default function ajax(url, data, type) {
         } else if (type === "POST"){
             promise = axios.post(url, data)
         }else if (type === "DELETE") {
-            promise = axios.get(url)
+            promise = axios.delete(url)
+        }else if (type === "PUT") {
+            promise = axios.put(url,data)
         }
 
         promise.then(response => {

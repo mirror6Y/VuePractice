@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import { Form, Input, Select, Radio } from 'antd'
+import { Form, Input, Select, Radio , Checkbox, Row, Col} from 'antd'
 const FormItem = Form.Item;
 const Option = Select.Option;
-
-
 
 class UserAdd extends Component {
 
     addRef = React.createRef();
-
 
     render() {
 
@@ -54,14 +51,51 @@ class UserAdd extends Component {
                     <Input placeholder="请输入电子邮箱" />
                 </FormItem>
 
-                <FormItem name="select" label="角色" hasFeedback
+                <Form.Item name="roleIds" label="角色">
+                    <Checkbox.Group>
+                        <Row>
+                            <Col span={8}>
+                                <Checkbox
+                                    value="1"
+                                    style={{
+                                        lineHeight: '32px',
+                                    }}
+                                >
+                                    普通角色
+                                </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                                <Checkbox
+                                    value="2"
+                                    style={{
+                                        lineHeight: '32px',
+                                    }}
+                                >
+                                    学生管理员
+                                </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                                <Checkbox
+                                    value="3"
+                                    style={{
+                                        lineHeight: '32px',
+                                    }}
+                                >
+                                    教师管理员
+                                </Checkbox>
+                            </Col>
+                        </Row>
+                    </Checkbox.Group>
+                </Form.Item>
+
+                {/* <FormItem name="select" label="角色" hasFeedback
                     rules={[{ required: true, message: '请选择角色!' }]}
                 >
                     <Select placeholder="请选择角色">
                         <Option value="1">普通用户</Option>
                         <Option value="2">管理员</Option>
                     </Select>
-                </FormItem>
+                </FormItem> */}
 
             </Form>
         );

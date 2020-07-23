@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Card, Button, Table, Modal, notification, Space } from 'antd'
-// import { QuestionCircleOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 // import LinkButton from '../../../components/button'
-import { reqUserList, reqUserAdd, reqUserDel } from '../../../api/api.js'
+import { reqUserList, reqUserAdd, reqUserDel, reqUserEdit } from '../../../api/api.js'
 import UserAdd from './userAdd'
 import UserEdit from './userEdit'
 
 class User extends Component {
 
-    child = React.createRef();
-
+    addChild = React.createRef();
+    editChild = React.createRef();
 
     state = {
         userList: [
@@ -69,8 +69,8 @@ class User extends Component {
                 title: '操作',
                 render: (user) => (
                     <span>
-                        <Button onClick={() => this.showEdit(user)}>编辑</Button>
                         <Space>
+                            <Button onClick={() => this.showEdit(user)}>编辑</Button>
                             {/* <Button onClick={() => this.showInfoModal(record)}>详情</Button>
                             <Button onClick={() => this.toggleShowCreateModal(true, record)}>编辑</Button> */}
                             <Button type='danger' onClick={() => this.deleteUser(user.id)}>删除</Button>
@@ -83,7 +83,7 @@ class User extends Component {
 
     getUserList = async () => {
         const result = await reqUserList();
-        console.log("getUserList:" + result.data.records)
+
         if (result.code === 200) {
             const data = result.data.records;
             this.setState({ userList: data })
@@ -98,84 +98,116 @@ class User extends Component {
         }
     }
 
-
     handleCancel = () => {
         this.setState({
             showStatus: 0
         })
     }
 
+    //显示添加组件
     showAdd = () => {
         this.setState({
             showStatus: 1
         })
     }
 
+    //显示编辑组件
     showEdit = (user) => {
         //保存对象
         this.editData = user;
-        console.log("edit:" + JSON.stringify(this.editData))
-
-
+        console.log("::" + JSON.stringify(user))
         this.setState({
             showStatus: 2
         })
     }
 
-
+    //添加信息
     addUser = async () => {
-        const data = this.child.current.addRef.current.getFieldsValue();
-        console.log("addUser：" + data)
+
+        this.setState({ showStatus: 0 });
+
+        const data = this.addChild.current.addRef.current.getFieldsValue();
+        this.addChild.current.addRef.current.resetFields();
+
         const result = await reqUserAdd(data);
         if (result.code === 200) {
-            this.setState({ showStatus: 0 })
             notification.success({
-                duration: 1,
+                duration: 2,
                 message: '提示',
                 description: result.msg
             });
-            this.getUserList();
 
+            this.getUserList();
         } else {
             notification.error({
-                duration: 1,
+                duration: null,
                 message: '提示',
                 description: result.msg
             })
         }
+
     }
 
-    // deleteUser = (index) => {
+    //编辑信息
+    editUser = async () => {
 
-    //     Modal.confirm({
-    //         title: '提示',
-    //         okText: '确定',
-    //         cancelText: '取消',
-    //         icon: <QuestionCircleOutlined />,
-    //         content: '您确定删除此条内容吗？',
-    //         async onOk() {
+        this.setState({ showStatus: 0 });
 
-    //             const result = await reqUserDel(index);
-    //             if (result.code === 200) {
+        const data = this.editChild.current.editRef.current.getFieldsValue();
+        console.log("编辑后的数据：" + JSON.stringify(data))
+        this.editChild.current.editRef.current.resetFields();
 
-    //                 notification.success({
-    //                     duration: 1,
-    //                     message: '提示',
-    //                     description: result.msg
-    //                 });
-    //                 this.getUserList();
+        const result = await reqUserEdit(data);
+        if (result.code === 200) {
 
-    //             } else {
-    //                 notification.error({
-    //                     duration: 1,
-    //                     message: '提示',
-    //                     description: result.msg
-    //                 })
-    //             }
+            notification.success({
+                duration: 2,
+                message: '提示',
+                description: result.msg
+            });
+            this.getUserList();
+        } else {
+            notification.error({
+                duration: null,
+                message: '提示',
+                description: result.msg
+            })
+        }
 
-    //         }
-    //     })
-    // }
+    }
+
+    //删除信息
+    deleteUser = (index) => {
+
+        Modal.confirm({
+            title: '提示',
+            okText: '确定',
+            cancelText: '取消',
+            icon: <QuestionCircleOutlined />,
+            content: '您确定删除此条内容吗？',
+            onOk: async () => {
+
+                const result = await reqUserDel(index);
+                if (result.code === 200) {
+
+                    notification.success({
+                        duration: 1,
+                        message: '提示',
+                        description: result.msg
+                    });
+                    this.getUserList();
+
+                } else {
+                    notification.error({
+                        duration: 1,
+                        message: '提示',
+                        description: result.msg
+                    })
+                }
+
+            }
+        })
+    }
 
     componentWillMount() {
         this.initColumn();
@@ -192,8 +224,10 @@ class User extends Component {
 
         const title = (
             <span>
-                <Button type="primary" onClick={this.showAdd}>新增</Button>
-                <Button type="primary" disabled={!user.id}>批量删除</Button>
+                <Space>
+                    <Button type="primary" onClick={this.showAdd}>新增</Button>
+                    <Button type="primary" disabled={!user.id}>批量删除</Button>
+                </Space>
             </span>
         )
 
@@ -206,11 +240,11 @@ class User extends Component {
                     dataSource={userList} />
                 <Modal visible={showStatus === 1} title="添加用户" okText='确定'
                     cancelText='取消' onOk={this.addUser} onCancel={this.handleCancel} >
-                    <UserAdd ref={this.child}></UserAdd>
+                    <UserAdd ref={this.addChild}></UserAdd>
                 </Modal>
                 <Modal visible={showStatus === 2} title="编辑用户" okText='确定'
                     cancelText='取消' onOk={this.editUser} onCancel={this.handleCancel} >
-                    <UserEdit userData={editData}></UserEdit>
+                    <UserEdit ref={this.editChild} userData={editData}></UserEdit>
                 </Modal>
             </Card >
         );
