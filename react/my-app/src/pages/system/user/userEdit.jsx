@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Form, Input, Select, Radio, Checkbox, Row, Col } from 'antd'
+import { Form, Input,  Radio, Checkbox, Row, Col } from 'antd'
 const FormItem = Form.Item;
-const Option = Select.Option;
+// const Option = Select.Option;
 
 class UserEdit extends Component {
 

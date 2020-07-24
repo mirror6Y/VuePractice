@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Form, Input, Select, Radio , Checkbox, Row, Col} from 'antd'
+import { Form, Input,  Radio , Checkbox, Row, Col} from 'antd'
 const FormItem = Form.Item;
-const Option = Select.Option;
+// const Option = Select.Option;
 
 class UserAdd extends Component {
 
@@ -87,15 +87,6 @@ class UserAdd extends Component {
                         </Row>
                     </Checkbox.Group>
                 </Form.Item>
-
-                {/* <FormItem name="select" label="角色" hasFeedback
-                    rules={[{ required: true, message: '请选择角色!' }]}
-                >
-                    <Select placeholder="请选择角色">
-                        <Option value="1">普通用户</Option>
-                        <Option value="2">管理员</Option>
-                    </Select>
-                </FormItem> */}
 
             </Form>
         );

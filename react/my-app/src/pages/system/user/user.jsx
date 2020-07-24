@@ -3,7 +3,7 @@ import { Card, Button, Table, Modal, notification, Space } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
 // import LinkButton from '../../../components/button'
-import { reqUserList, reqUserAdd, reqUserDel, reqUserEdit } from '../../../api/api.js'
+import { reqUserList, reqUserAdd, reqUserDelete, reqUserEdit } from '../../../api/api.js'
 import UserAdd from './userAdd'
 import UserEdit from './userEdit'
 
@@ -13,24 +13,10 @@ class User extends Component {
     editChild = React.createRef();
 
     state = {
-        userList: [
-            // {
-            //     key: '1',
-            //     account: '1',
-            //     name: 'John Brown',
-            //     college: 32,
-            //     address: 'New York Park',
-            // },
-            // {
-            //     key: '2',
-            //     account: '2',
-            //     name: 'Jim Green',
-            //     college: 40,
-            //     address: 'London Park',
-            // },
-        ],
+        userList: [],
         //复选框 选择的用户
         user: {},
+        selectedRowKeys: [],
         // 0 不显示添加和修改组件 1 显示添加 2显示修改
         showStatus: 0
     }
@@ -71,8 +57,6 @@ class User extends Component {
                     <span>
                         <Space>
                             <Button onClick={() => this.showEdit(user)}>编辑</Button>
-                            {/* <Button onClick={() => this.showInfoModal(record)}>详情</Button>
-                            <Button onClick={() => this.toggleShowCreateModal(true, record)}>编辑</Button> */}
                             <Button type='danger' onClick={() => this.deleteUser(user.id)}>删除</Button>
                         </Space>
                     </span>
@@ -136,7 +120,6 @@ class User extends Component {
                 message: '提示',
                 description: result.msg
             });
-
             this.getUserList();
         } else {
             notification.error({
@@ -154,12 +137,10 @@ class User extends Component {
         this.setState({ showStatus: 0 });
 
         const data = this.editChild.current.editRef.current.getFieldsValue();
-        console.log("编辑后的数据：" + JSON.stringify(data))
         this.editChild.current.editRef.current.resetFields();
 
         const result = await reqUserEdit(data);
         if (result.code === 200) {
-
             notification.success({
                 duration: 2,
                 message: '提示',
@@ -186,8 +167,8 @@ class User extends Component {
             icon: <QuestionCircleOutlined />,
             content: '您确定删除此条内容吗？',
             onOk: async () => {
-
-                const result = await reqUserDel(index);
+                var id = new Array(index);
+                const result = await reqUserDelete(id);
                 if (result.code === 200) {
 
                     notification.success({
@@ -199,7 +180,43 @@ class User extends Component {
 
                 } else {
                     notification.error({
+                        duration: null,
+                        message: '提示',
+                        description: result.msg
+                    })
+                }
+
+            }
+        })
+    }
+
+    deleteBatch = () => {
+
+        Modal.confirm({
+            title: '提示',
+            okText: '确定',
+            cancelText: '取消',
+            icon: <QuestionCircleOutlined />,
+            content: '您确定删除勾选内容吗？',
+            onOk: async () => {
+
+                const ids = this.state.selectedRowKeys;
+
+                const result = await reqUserDelete(ids);
+                if (result.code === 200) {
+                    notification.success({
                         duration: 1,
+                        message: '提示',
+                        description: result.msg
+                    });
+                    this.setState({
+                        selectedRowKeys: []
+                    });
+                    this.getUserList();
+
+                } else {
+                    notification.error({
+                        duration: null,
                         message: '提示',
                         description: result.msg
                     })
@@ -220,22 +237,31 @@ class User extends Component {
     render() {
 
         const editData = this.editData;
-        const { userList, user, showStatus } = this.state;
+        const { userList, user, showStatus, selectedRowKeys } = this.state;
 
         const title = (
             <span>
                 <Space>
                     <Button type="primary" onClick={this.showAdd}>新增</Button>
-                    <Button type="primary" disabled={!user.id}>批量删除</Button>
+                    <Button type="danger" disabled={!selectedRowKeys.length} onClick={this.deleteBatch}>批量删除</Button>
                 </Space>
             </span>
         )
 
+        const rowSelection = {
+            selectedRowKeys: selectedRowKeys,
+            onChange: (selectedRowKeys) => this.setState({ selectedRowKeys }),
+            // getCheckboxProps: (record) => ({
+            //     disabled: record.id === this.props.user.id
+            // })
+        }
+
         return (
             <Card title={title}>
                 <Table
-                    rowSelection={{ type: "checkout" }}
+                    rowSelection={rowSelection}
                     columns={this.columns}
+                    rowKey="id"
                     onRow={this.onRow}
                     dataSource={userList} />
                 <Modal visible={showStatus === 1} title="添加用户" okText='确定'
