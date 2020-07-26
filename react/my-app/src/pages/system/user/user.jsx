@@ -6,6 +6,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { reqUserList, reqUserAdd, reqUserDelete, reqUserEdit } from '../../../api/api.js'
 import UserAdd from './userAdd'
 import UserEdit from './userEdit'
+import UserSearch from './userSearch'
 
 class User extends Component {
 
@@ -172,7 +173,7 @@ class User extends Component {
                 if (result.code === 200) {
 
                     notification.success({
-                        duration: 1,
+                        duration: 2,
                         message: '提示',
                         description: result.msg
                     });
@@ -205,7 +206,7 @@ class User extends Component {
                 const result = await reqUserDelete(ids);
                 if (result.code === 200) {
                     notification.success({
-                        duration: 1,
+                        duration: 2,
                         message: '提示',
                         description: result.msg
                     });
@@ -258,7 +259,8 @@ class User extends Component {
 
         return (
             <Card title={title}>
-                <Table
+            <UserSearch></UserSearch>    
+            <Table
                     rowSelection={rowSelection}
                     columns={this.columns}
                     rowKey="id"
