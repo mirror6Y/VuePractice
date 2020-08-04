@@ -258,9 +258,15 @@ class User extends Component {
         }
 
         return (
-            <Card title={title}>
-            <UserSearch></UserSearch>    
-            <Table
+            <Card>
+                <UserSearch></UserSearch>
+                <span >
+                    <Space>
+                        <Button type="primary" onClick={this.showAdd}>新增</Button>
+                        <Button type="danger" disabled={!selectedRowKeys.length} onClick={this.deleteBatch}>批量删除</Button>
+                    </Space>
+                </span>
+                <Table
                     rowSelection={rowSelection}
                     columns={this.columns}
                     rowKey="id"
