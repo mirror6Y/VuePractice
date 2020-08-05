@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Form, Row, Col, Select, Input, Button, DatePicker, Space } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
-const { RangePicker } = DatePicker;
 
+const { RangePicker } = DatePicker;
 class UserSearch extends Component {
 
+    searchRef = React.createRef();
 
     render() {
 
@@ -15,20 +16,18 @@ class UserSearch extends Component {
 
         return (
             <Form
-                // form={form}
-                // layout="inline"
-                // name="advanced_search"
                 onFinish={onFinish}
+                ref={this.searchRef}
                 style={{ marginBottom: 16 }}
             >
                 <Row gutter={24}>
-                    <Col span={4}>
+                    <Col span={5}>
                         <FormItem name="name" label="用户姓名">
                             <Input />
                         </FormItem>
                     </Col>
 
-                    <Col span={4}>
+                    <Col span={5}>
                         <FormItem name="tel" label="手机号码" >
                             <Input />
                         </FormItem>
@@ -43,7 +42,7 @@ class UserSearch extends Component {
                         </FormItem>
                     </Col> */}
 
-                    <Col span={4}>
+                    <Col span={5}>
                         <FormItem name="roleIds" label="启用状态">
                             <Select >
                                 <Option value="0">启用</Option>
@@ -53,7 +52,7 @@ class UserSearch extends Component {
                     </Col>
 
                     <Col span={6}>
-                        <FormItem name="range-picker" label="创建时间" >
+                        <FormItem name="" label="创建时间" >
                             <RangePicker />
                         </FormItem>
                     </Col>

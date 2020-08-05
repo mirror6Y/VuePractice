@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
-import { Card, Button, Table, Modal, notification, Space } from 'antd'
+import { Card, Button, Table, Modal, notification, Space, Switch, Form, Row, Col, Select, Input, DatePicker } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
+import { formatDate } from '../../../utils/dateUtil'
 // import LinkButton from '../../../components/button'
-import { reqUserList, reqUserAdd, reqUserDelete, reqUserEdit } from '../../../api/api.js'
+import { reqUserList, reqUserAdd, reqUserDelete, reqUserEdit, reqUserSearch } from '../../../api/api.js'
 import UserAdd from './userAdd'
 import UserEdit from './userEdit'
 import UserSearch from './userSearch'
 
+const FormItem = Form.Item;
+const Option = Select.Option;
+const { RangePicker } = DatePicker;
 class User extends Component {
 
     addChild = React.createRef();
     editChild = React.createRef();
+    formRef = React.createRef();
 
     state = {
         userList: [],
@@ -24,10 +29,10 @@ class User extends Component {
 
     initColumn = () => {
         this.columns = [
-            {
-                title: '主键',
-                dataIndex: 'id',
-            },
+            // {
+            //     title: '主键',
+            //     dataIndex: 'id',
+            // },
             {
                 title: '账号',
                 dataIndex: 'account',
@@ -46,11 +51,17 @@ class User extends Component {
             },
             {
                 title: '是否启用',
-                dataIndex: 'enabled'
+                dataIndex: 'enabled',
+                render: () => (
+                    <Switch checkedChildren="开启" unCheckedChildren="关闭" defaultChecked />
+                )
             },
             {
                 title: '创建时间',
                 dataIndex: 'gmtCreate',
+                render: (value) => {
+                    return formatDate(value);
+                }
             },
             {
                 title: '操作',
@@ -80,6 +91,22 @@ class User extends Component {
             onClick: event => {
                 console.log(user);
             }
+        }
+    }
+
+    //列表搜索
+    search = async () => {
+        const data = this.formRef.current.getFieldsValue();
+        const result = await reqUserSearch(data);
+        if (result.code === 200) {
+            const data = result.data.records;
+            this.setState({ userList: data })
+        } else {
+            notification.error({
+                duration: null,
+                message: '提示',
+                description: result.msg
+            })
         }
     }
 
@@ -113,7 +140,6 @@ class User extends Component {
 
         const data = this.addChild.current.addRef.current.getFieldsValue();
         this.addChild.current.addRef.current.resetFields();
-
         const result = await reqUserAdd(data);
         if (result.code === 200) {
             notification.success({
@@ -259,7 +285,43 @@ class User extends Component {
 
         return (
             <Card>
-                <UserSearch></UserSearch>
+                <Form
+                    // onFinish={this.search}
+                    ref={this.formRef}
+                    style={{ marginBottom: 16 }}
+                >
+                    <Row gutter={24}>
+                        <Col span={5}>
+                            <FormItem name="name" label="用户姓名">
+                                <Input />
+                            </FormItem>
+                        </Col>
+                        <Col span={5}>
+                            <FormItem name="tel" label="手机号码" >
+                                <Input />
+                            </FormItem>
+                        </Col>
+                        <Col span={5}>
+                            <FormItem name="enabled" label="启用状态">
+                                <Select >
+                                    <Option value="0">启用</Option>
+                                    <Option value="1">禁用</Option>
+                                </Select>
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
+                            <FormItem name="gmtCreate" label="创建时间" >
+                                <RangePicker />
+                            </FormItem>
+                        </Col>
+                        <Col span={24}>
+                            <Space>
+                                <Button type="primary" onClick={this.search}>搜索</Button>
+                                <Button onClick={() => { this.formRef.current.resetFields(); }}>重置 </Button>
+                            </Space>
+                        </Col>
+                    </Row>
+                </Form>
                 <span >
                     <Space>
                         <Button type="primary" onClick={this.showAdd}>新增</Button>
@@ -271,7 +333,8 @@ class User extends Component {
                     columns={this.columns}
                     rowKey="id"
                     onRow={this.onRow}
-                    dataSource={userList} />
+                    dataSource={userList}
+                    style={{ marginTop: 10 }} />
                 <Modal visible={showStatus === 1} title="添加用户" okText='确定'
                     cancelText='取消' onOk={this.addUser} onCancel={this.handleCancel} >
                     <UserAdd ref={this.addChild}></UserAdd>

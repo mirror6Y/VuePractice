@@ -28,6 +28,9 @@ export const reqWeather = (cityCode) => {
 // 用户列表
 export const reqUserList=()=>ajax('/system/user/getUserList', null,'GET')
 
+//列表检索
+export const reqUserSearch=(data)=>ajax('/system/user/getUserList', data,'GET')
+
 //添加用户
 export const reqUserAdd=(data)=>ajax('/system/user/addUser', data,'POST')
 
