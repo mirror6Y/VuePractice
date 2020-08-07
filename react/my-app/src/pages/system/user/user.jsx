@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Card, Button, Table, Modal, notification, Space, Switch, Form, Row, Col, Select, Input, DatePicker } from 'antd'
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined ,ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { formatDate } from '../../../utils/dateUtil'
 // import LinkButton from '../../../components/button'
-import { reqUserList, reqUserAdd, reqUserDelete, reqUserEdit, reqUserSearch } from '../../../api/api.js'
+import { reqUserList, reqUserAdd, reqUserDelete, reqUserEdit, reqUserStatusEdit, reqUserSearch } from '../../../api/api.js'
 import UserAdd from './userAdd'
 import UserEdit from './userEdit'
 import UserSearch from './userSearch'
@@ -52,8 +52,8 @@ class User extends Component {
             {
                 title: '是否启用',
                 dataIndex: 'enabled',
-                render: () => (
-                    <Switch checkedChildren="开启" unCheckedChildren="关闭" defaultChecked />
+                render: (text, record, index) => (
+                    <Switch checkedChildren="开启" unCheckedChildren="关闭" defaultChecked onChange={() => this.onChange(text, record)} />
                 )
             },
             {
@@ -89,7 +89,7 @@ class User extends Component {
     onRow = (user) => {
         return {
             onClick: event => {
-                console.log(user);
+                // console.log(user);
             }
         }
     }
@@ -108,6 +108,65 @@ class User extends Component {
                 description: result.msg
             })
         }
+    }
+
+    //修改用户状态
+    onChange = async (text, record) => {
+        // if (record.enabled === 0) {
+        //     record.enabled = 1
+        // } else {
+        //     record.enabled = 0
+        // }
+        // console.log(record.enabled)
+        // const result = await reqUserStatusEdit(record);
+
+        // if (result.code === 200) {
+        //     notification.success({
+        //         duration: 2,
+        //         message: '提示',
+        //         description: result.msg
+        //     });
+        //     this.getUserList();
+        // } else {
+        //     notification.error({
+        //         duration: null,
+        //         message: '提示',
+        //         description: result.msg
+        //     })
+        // }
+
+        Modal.confirm({
+            title: '提示',
+            okText: '确定',
+            cancelText: '取消',
+            icon: <ExclamationCircleOutlined  />,
+            content: '您确定修改用户状态吗？',
+            onOk: async () => {
+                if (record.enabled === 0) {
+                    record.enabled = 1
+                } else {
+                    record.enabled = 0
+                }
+                const result = await reqUserStatusEdit(record);
+                if (result.code === 200) {
+
+                    notification.success({
+                        duration: 2,
+                        message: '提示',
+                        description: result.msg
+                    });
+                    this.getUserList();
+
+                } else {
+                    notification.error({
+                        duration: null,
+                        message: '提示',
+                        description: result.msg
+                    })
+                }
+
+            }
+        })
     }
 
     handleCancel = () => {
@@ -140,6 +199,7 @@ class User extends Component {
 
         const data = this.addChild.current.addRef.current.getFieldsValue();
         this.addChild.current.addRef.current.resetFields();
+        console.log(data)
         const result = await reqUserAdd(data);
         if (result.code === 200) {
             notification.success({
