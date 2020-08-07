@@ -43,5 +43,7 @@ export const reqUserEdit=(data)=>ajax('/system/user/updateUser', data,'PUT')
 //编辑用户状态
 export const reqUserStatusEdit=(data)=>ajax('/system/user/updateStatus', data,'PUT')
 
+//--------------------------角色模块--------------------------------------------
+
 // 角色列表
 export const reqRoleList=()=>ajax('/system/role/getRoleList', null,'GET')

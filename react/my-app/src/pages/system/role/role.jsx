@@ -6,20 +6,7 @@ import { reqRoleList } from '../../../api/api.js'
 class Role extends Component {
 
     state = {
-        roleList: [
-            {
-                key: '1',
-                name: 'John Brown',
-                age: 32,
-                address: 'New York Park',
-            },
-            {
-                key: '2',
-                name: 'Jim Green',
-                age: 40,
-                address: 'London Park',
-            },
-        ]
+        roleList: []
     }
 
     initColumn = () => {
@@ -30,28 +17,28 @@ class Role extends Component {
             },
             {
                 title: '描述',
-                dataIndex: 'age',
+                dataIndex: 'description',
             },
             {
                 title: '排序码',
-                dataIndex: 'address',
+                dataIndex: 'sort',
             },
             {
                 title: '启用状态',
-                dataIndex: 'age',
+                dataIndex: 'enabled',
             },
             {
                 title: '创建时间',
-                dataIndex: 'address',
+                dataIndex: 'gmtCreate',
             }
         ]
     }
 
     getRoleList = async () => {
         const result = await reqRoleList();
-        if (result.state === 200) {
-            const data = result.data;
-            this.setState({ data })
+        if (result.code === 200) {
+            const data = result.data.records;
+            this.setState({ roleList: data })
         }
     }
 
@@ -68,7 +55,7 @@ class Role extends Component {
     }
 
     componentDidMount() {
-        // this.getRoleList();
+        this.getRoleList();
     }
 
     render() {
@@ -79,10 +66,11 @@ class Role extends Component {
                 <Button type="primary">新增</Button>
             </span>
         )
-        
+
         return (
             <Card title={title}>
                 <Table
+                    rowKey="id"
                     rowSelection={{ type: "checkout" }}
                     columns={this.columns}
                     onRow={this.onRow}
