@@ -702,5 +702,14 @@ module.exports = function (webpackEnv) {
     // Turn off performance processing because we utilize
     // our own hints via the FileSizeReporter
     performance: false,
+    // proxy: {
+    //   '/': {
+    //     bypass: function (req, res, proxyOptions) {
+    //       console.log('Skipping proxy for browser request.')
+    //       return `page/index.html`
+    //     }
+    //   }
+    // }
   };
 };
+

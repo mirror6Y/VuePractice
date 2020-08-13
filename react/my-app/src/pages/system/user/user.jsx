@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Card, Button, Table, Modal, notification, Space, Switch, Form, Row, Col, Select, Input, DatePicker } from 'antd'
-import { QuestionCircleOutlined ,ExclamationCircleOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { formatDate } from '../../../utils/dateUtil'
 // import LinkButton from '../../../components/button'
 import { reqUserList, reqUserAdd, reqUserDelete, reqUserEdit, reqUserStatusEdit, reqUserSearch } from '../../../api/api.js'
 import UserAdd from './userAdd'
 import UserEdit from './userEdit'
-import UserSearch from './userSearch'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -21,18 +20,22 @@ class User extends Component {
     state = {
         userList: [],
         //复选框 选择的用户
-        user: {},
         selectedRowKeys: [],
         // 0 不显示添加和修改组件 1 显示添加 2显示修改
-        showStatus: 0
+        showStatus: 0,
+        pagination: {
+            total: 0,
+            current: 1,
+            pageSize: 10,
+            pageSizeOptions: [5, 10, 20, 50, 100],
+            showQuickJumper: true,
+            showSizeChanger: true
+        },
+
     }
 
     initColumn = () => {
         this.columns = [
-            // {
-            //     title: '主键',
-            //     dataIndex: 'id',
-            // },
             {
                 title: '账号',
                 dataIndex: 'account',
@@ -77,12 +80,26 @@ class User extends Component {
         ]
     }
 
-    getUserList = async () => {
-        const result = await reqUserList();
+    getUserList = async (current = 1, pageSize = 10) => {
+        const { pagination } = this.state;
+
+        const data = this.formRef.current.getFieldsValue();
+        data.pageNum = current;
+        data.pageSize = pageSize;
+
+        const result = await reqUserSearch(data);
 
         if (result.code === 200) {
             const data = result.data.records;
-            this.setState({ userList: data })
+            this.setState({
+                userList: data,
+                pagination: {
+                    ...pagination,
+                    total: result.data.total,
+                    current: current,
+                    pageSize: pageSize
+                }
+            })
         }
     }
 
@@ -97,49 +114,32 @@ class User extends Component {
     //列表搜索
     search = async () => {
         const data = this.formRef.current.getFieldsValue();
+        data.gmtCreate = [data.gmtCreate[0]._d, data.gmtCreate[1]._d];
         const result = await reqUserSearch(data);
         if (result.code === 200) {
             const data = result.data.records;
             this.setState({ userList: data })
-        } else {
-            notification.error({
-                duration: null,
-                message: '提示',
-                description: result.msg
-            })
         }
+    }
+
+
+    //table分页
+    onTableChange = async (page) => {
+        console.log(page)
+        await this.setState({
+            pagination: page
+        })
+        this.getUserList(page.current, page.pageSize);
     }
 
     //修改用户状态
     onChange = async (text, record) => {
-        // if (record.enabled === 0) {
-        //     record.enabled = 1
-        // } else {
-        //     record.enabled = 0
-        // }
-        // console.log(record.enabled)
-        // const result = await reqUserStatusEdit(record);
-
-        // if (result.code === 200) {
-        //     notification.success({
-        //         duration: 2,
-        //         message: '提示',
-        //         description: result.msg
-        //     });
-        //     this.getUserList();
-        // } else {
-        //     notification.error({
-        //         duration: null,
-        //         message: '提示',
-        //         description: result.msg
-        //     })
-        // }
 
         Modal.confirm({
             title: '提示',
             okText: '确定',
             cancelText: '取消',
-            icon: <ExclamationCircleOutlined  />,
+            icon: <ExclamationCircleOutlined />,
             content: '您确定修改用户状态吗？',
             onOk: async () => {
                 if (record.enabled === 0) {
@@ -324,29 +324,16 @@ class User extends Component {
     render() {
 
         const editData = this.editData;
-        const { userList, user, showStatus, selectedRowKeys } = this.state;
-
-        const title = (
-            <span>
-                <Space>
-                    <Button type="primary" onClick={this.showAdd}>新增</Button>
-                    <Button type="danger" disabled={!selectedRowKeys.length} onClick={this.deleteBatch}>批量删除</Button>
-                </Space>
-            </span>
-        )
+        const { userList, showStatus, selectedRowKeys, pagination } = this.state;
 
         const rowSelection = {
             selectedRowKeys: selectedRowKeys,
-            onChange: (selectedRowKeys) => this.setState({ selectedRowKeys }),
-            // getCheckboxProps: (record) => ({
-            //     disabled: record.id === this.props.user.id
-            // })
+            onChange: (selectedRowKeys) => this.setState({ selectedRowKeys })
         }
 
         return (
             <Card>
                 <Form
-                    // onFinish={this.search}
                     ref={this.formRef}
                     style={{ marginBottom: 16 }}
                 >
@@ -394,6 +381,8 @@ class User extends Component {
                     rowKey="id"
                     onRow={this.onRow}
                     dataSource={userList}
+                    pagination={pagination}
+                    onChange={this.onTableChange}
                     style={{ marginTop: 10 }} />
                 <Modal visible={showStatus === 1} title="添加用户" okText='确定'
                     cancelText='取消' onOk={this.addUser} onCancel={this.handleCancel} >
