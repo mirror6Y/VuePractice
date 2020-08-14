@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Button, Table, Modal, notification, Space, Switch, Form, Row, Col, Select, Input, DatePicker } from 'antd'
 import { QuestionCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
-import { formatDate } from '../../../utils/dateUtil'
+import { formatDate, parseDate } from '../../../utils/dateUtil'
 // import LinkButton from '../../../components/button'
 import { reqUserList, reqUserAdd, reqUserDelete, reqUserEdit, reqUserStatusEdit, reqUserSearch } from '../../../api/api.js'
 import UserAdd from './userAdd'
@@ -56,7 +56,7 @@ class User extends Component {
                 title: '是否启用',
                 dataIndex: 'enabled',
                 render: (text, record, index) => (
-                    <Switch checkedChildren="开启" unCheckedChildren="关闭" defaultChecked onChange={() => this.onChange(text, record)} />
+                    <Switch checkedChildren="开启" unCheckedChildren="关闭" checked={text === 0 ? 1 : 0} defaultChecked onChange={() => this.onChange(text, record)} />
                 )
             },
             {
@@ -103,18 +103,12 @@ class User extends Component {
         }
     }
 
-    onRow = (user) => {
-        return {
-            onClick: event => {
-                // console.log(user);
-            }
-        }
-    }
-
     //列表搜索
     search = async () => {
         const data = this.formRef.current.getFieldsValue();
-        data.gmtCreate = [data.gmtCreate[0]._d, data.gmtCreate[1]._d];
+        if (data.gmtCreate) {
+            data.gmtCreate = parseDate(data.gmtCreate[0]._d) + "&" + parseDate(data.gmtCreate[1]._d)
+        }
         const result = await reqUserSearch(data);
         if (result.code === 200) {
             const data = result.data.records;
@@ -186,20 +180,27 @@ class User extends Component {
     showEdit = (user) => {
         //保存对象
         this.editData = user;
-        console.log("::" + JSON.stringify(user))
         this.setState({
             showStatus: 2
         })
     }
 
-    //添加信息
-    addUser = async () => {
-
+    //添加验证
+    handleOk = () => {
+        const ref = this.addChild.current.addRef.current;
         this.setState({ showStatus: 0 });
+        ref.validateFields()
+            .then(values => {
+                ref.resetFields();
+                this.addUser(values);
+            })
+            .catch(errorInfo => {
+                console.log(errorInfo)
+            });
+    }
 
-        const data = this.addChild.current.addRef.current.getFieldsValue();
-        this.addChild.current.addRef.current.resetFields();
-        console.log(data)
+    //添加方法
+    addUser = async (data) => {
         const result = await reqUserAdd(data);
         if (result.code === 200) {
             notification.success({
@@ -215,17 +216,25 @@ class User extends Component {
                 description: result.msg
             })
         }
+    }
 
+
+    //编辑验证
+    handleEdit = () => {
+        const ref = this.editChild.current.editRef.current;
+        ref.validateFields()
+            .then(values => {
+                this.setState({ showStatus: 0 });
+                ref.resetFields();
+                this.editUser(values);
+            })
+            .catch(errorInfo => {
+                console.log(errorInfo)
+            });
     }
 
     //编辑信息
-    editUser = async () => {
-
-        this.setState({ showStatus: 0 });
-
-        const data = this.editChild.current.editRef.current.getFieldsValue();
-        this.editChild.current.editRef.current.resetFields();
-
+    editUser = async (data) => {
         const result = await reqUserEdit(data);
         if (result.code === 200) {
             notification.success({
@@ -241,7 +250,6 @@ class User extends Component {
                 description: result.msg
             })
         }
-
     }
 
     //删除信息
@@ -340,17 +348,17 @@ class User extends Component {
                     <Row gutter={24}>
                         <Col span={5}>
                             <FormItem name="name" label="用户姓名">
-                                <Input />
+                                <Input placeholder="请输入账号" />
                             </FormItem>
                         </Col>
                         <Col span={5}>
                             <FormItem name="tel" label="手机号码" >
-                                <Input />
+                                <Input placeholder="请输入手机号码" />
                             </FormItem>
                         </Col>
                         <Col span={5}>
                             <FormItem name="enabled" label="启用状态">
-                                <Select >
+                                <Select placeholder="请选择">
                                     <Option value="0">启用</Option>
                                     <Option value="1">禁用</Option>
                                 </Select>
@@ -379,17 +387,16 @@ class User extends Component {
                     rowSelection={rowSelection}
                     columns={this.columns}
                     rowKey="id"
-                    onRow={this.onRow}
                     dataSource={userList}
                     pagination={pagination}
                     onChange={this.onTableChange}
                     style={{ marginTop: 10 }} />
                 <Modal visible={showStatus === 1} title="添加用户" okText='确定'
-                    cancelText='取消' onOk={this.addUser} onCancel={this.handleCancel} >
+                    cancelText='取消' onOk={this.handleOk} onCancel={this.handleCancel} >
                     <UserAdd ref={this.addChild}></UserAdd>
                 </Modal>
                 <Modal visible={showStatus === 2} title="编辑用户" okText='确定'
-                    cancelText='取消' onOk={this.editUser} onCancel={this.handleCancel} >
+                    cancelText='取消' onOk={this.handleEdit} onCancel={this.handleCancel} >
                     <UserEdit ref={this.editChild} userData={editData}></UserEdit>
                 </Modal>
             </Card >

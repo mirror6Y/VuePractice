@@ -1,21 +1,12 @@
 import React, { Component } from 'react';
-import { Form, Input,  Radio, Checkbox, Row, Col } from 'antd'
+import { Form, Input, Radio, Checkbox, Row, Col } from 'antd'
 const FormItem = Form.Item;
-// const Option = Select.Option;
-
 class UserEdit extends Component {
 
     editRef = React.createRef();
 
-    componentDidUpdate() {
-        console.log("几次啊")
-        const { userData } = this.props;
-        this.editRef.current.setFieldsValue(userData);
-        console.log({ userData })
-    }
-
     render() {
-
+        const { userData } = this.props;
         const formItemLayout = {
             labelCol: { span: 6 },
             wrapperCol: { span: 14 }
@@ -23,9 +14,9 @@ class UserEdit extends Component {
 
         return (
 
-            <Form {...formItemLayout} ref={this.editRef} >
+            <Form {...formItemLayout} ref={this.editRef} initialValues={userData} >
 
-                <FormItem name="id" label="主键">
+                <FormItem name="id" label="主键" hidden>
                     <Input />
                 </FormItem>
 
@@ -34,6 +25,10 @@ class UserEdit extends Component {
                         required: true,
                         message: '请输入账号',
                     },
+                    // {
+                    //     type: 'number',
+                    //     message: '账号由数字组成',
+                    // },
                 ]} >
                     <Input placeholder="请输入账号" />
                 </FormItem>
@@ -58,11 +53,21 @@ class UserEdit extends Component {
                     <Input placeholder="请输入手机号码" />
                 </FormItem>
 
-                <FormItem name="email" label="电子邮箱" >
+                <FormItem name="email" label="电子邮箱" rules={[
+                    {
+                        type: 'email',
+                        message: '请输入正确的邮箱',
+                    },
+                ]} >
                     <Input placeholder="请输入电子邮箱" />
                 </FormItem>
 
-                <Form.Item name="roleIds" label="角色">
+                <Form.Item name="roleIds" label="角色" rules={[
+                    {
+                        required: true,
+                        message: '请选择角色',
+                    },
+                ]} >
                     <Checkbox.Group>
                         <Row>
                             <Col span={8}>
@@ -73,7 +78,7 @@ class UserEdit extends Component {
                                     }}
                                 >
                                     普通角色
-                                </Checkbox>
+                </Checkbox>
                             </Col>
                             <Col span={8}>
                                 <Checkbox
@@ -83,7 +88,7 @@ class UserEdit extends Component {
                                     }}
                                 >
                                     学生管理员
-                                </Checkbox>
+                </Checkbox>
                             </Col>
                             <Col span={8}>
                                 <Checkbox
@@ -93,21 +98,11 @@ class UserEdit extends Component {
                                     }}
                                 >
                                     教师管理员
-                                </Checkbox>
+                </Checkbox>
                             </Col>
                         </Row>
                     </Checkbox.Group>
                 </Form.Item>
-
-                {/* <FormItem name="roleIds" label="角色" hasFeedback
-                    rules={[{ required: true, message: '请选择角色!' }]}
-                >
-                    <Select placeholder="请选择角色">
-                        <Option value="1">普通用户</Option>
-                        <Option value="2">管理员</Option>
-                    </Select>
-                </FormItem> */}
-
             </Form>
         );
     }

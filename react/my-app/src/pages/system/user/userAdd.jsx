@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Form, Input,  Radio , Checkbox, Row, Col} from 'antd'
+import { Form, Input, Radio, Checkbox, Row, Col } from 'antd'
 const FormItem = Form.Item;
-// const Option = Select.Option;
 
 class UserAdd extends Component {
 
@@ -22,6 +21,10 @@ class UserAdd extends Component {
                     {
                         required: true,
                         message: '请输入账号',
+                    },
+                    {
+                        type: 'number',
+                        message: '账号由数字组成',
                     },
                 ]} >
                     <Input placeholder="请输入账号" />
@@ -47,11 +50,21 @@ class UserAdd extends Component {
                     <Input placeholder="请输入手机号码" />
                 </FormItem>
 
-                <FormItem name="email" label="电子邮箱" >
+                <FormItem name="email" label="电子邮箱" rules={[
+                    {
+                        type: 'email',
+                        message: '请输入正确的邮箱',
+                    },
+                ]} >
                     <Input placeholder="请输入电子邮箱" />
                 </FormItem>
 
-                <Form.Item name="roleIds" label="角色">
+                <Form.Item name="roleIds" label="角色" rules={[
+                    {
+                        required: true,
+                        message: '请选择角色',
+                    },
+                ]} >
                     <Checkbox.Group>
                         <Row>
                             <Col span={8}>
@@ -87,7 +100,6 @@ class UserAdd extends Component {
                         </Row>
                     </Checkbox.Group>
                 </Form.Item>
-
             </Form>
         );
     }
