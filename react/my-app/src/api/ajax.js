@@ -3,7 +3,6 @@ import { message } from 'antd';
 export default function ajax(url, data, type) {
     let promise;
 
-    console.log("api:"+data)
     return new Promise((resolve, reject) => {
         if (type === "GET") {
             promise = axios.get(url, {

@@ -37,6 +37,14 @@ class User extends Component {
     initColumn = () => {
         this.columns = [
             {
+                title: '序号',
+                render: (text, record, index) => {
+                    return (
+                        <span>{(this.state.pagination.current - 1) * this.state.pagination.pageSize + (index + 1)}</span>
+                    )
+                }
+            },
+            {
                 title: '账号',
                 dataIndex: 'account',
             },
@@ -119,7 +127,6 @@ class User extends Component {
 
     //table分页
     onTableChange = async (page) => {
-        console.log(page)
         await this.setState({
             pagination: page
         })

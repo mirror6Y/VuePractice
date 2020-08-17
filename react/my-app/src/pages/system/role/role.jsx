@@ -3,10 +3,14 @@ import { Card, Button, Table } from 'antd'
 
 import { reqRoleList } from '../../../api/api.js'
 
+import RoleAdd from '../role/roleAdd'
+
 class Role extends Component {
 
     state = {
-        roleList: []
+        roleList: [],
+        // 0 不显示添加和修改组件 1 显示添加 2显示修改
+        showStatus: 0,
     }
 
     initColumn = () => {
@@ -16,7 +20,7 @@ class Role extends Component {
                 dataIndex: 'name',
             },
             {
-                title: '描述',
+                title: '描述信息',
                 dataIndex: 'description',
             },
             {
@@ -42,12 +46,11 @@ class Role extends Component {
         }
     }
 
-    onRow = (role) => {
-        return {
-            onClick: event => {
-                console.log(role);
-            }
-        }
+    //显示添加组件
+    toggleVisible = (status) => {
+        this.setState({
+            showStatus: status
+        })
     }
 
     componentWillMount() {
@@ -60,10 +63,10 @@ class Role extends Component {
 
     render() {
 
-        const { roleList } = this.state;
+        const { roleList, showStatus } = this.state;
         const title = (
             <span>
-                <Button type="primary">新增</Button>
+                <Button type="primary" onClick={() =>this.toggleVisible(1)}>新增</Button>
             </span>
         )
 
@@ -73,8 +76,8 @@ class Role extends Component {
                     rowKey="id"
                     rowSelection={{ type: "checkout" }}
                     columns={this.columns}
-                    onRow={this.onRow}
                     dataSource={roleList} />
+                <RoleAdd visible={showStatus} toggleVisible={this.toggleVisible} onRefresh={this.getRoleList} />
             </Card>
         );
     }

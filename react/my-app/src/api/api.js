@@ -1,10 +1,6 @@
 import ajax from './ajax'
 import jsonp from 'jsonp'
 
-// export function reqLogin(username, password) {
-//     ajax('/login', { username, password }, 'GET');
-// },
-
 //登录
 export const reqLogin = (username, password) => ajax('/login', { username, password }, 'GET');
 
@@ -47,3 +43,6 @@ export const reqUserStatusEdit=(data)=>ajax('/system/user/updateStatus', data,'P
 
 // 角色列表
 export const reqRoleList=()=>ajax('/system/role/getRoleList', null,'GET')
+
+//添加角色
+export const reqRoleAdd=(data)=>ajax('/system/role/addRole', data,'POST')
