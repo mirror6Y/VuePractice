@@ -5,8 +5,31 @@ class UserEdit extends Component {
 
     editRef = React.createRef();
 
-    render() {
+    componentWillMount() {
         const { userData } = this.props;
+        setTimeout(() => {
+            console.log({ ...userData })
+            console.log({ userData })
+            this.editRef.current.setFieldsValue({ account: '123' });
+        }, 100);
+
+    }
+
+
+    componentWillUpdate() {
+        const { userData } = this.props;
+        setTimeout(() => {
+            console.log({ ...userData })
+            console.log({ userData })
+            this.editRef.current.setFieldsValue({ ...userData });
+        }, 100);
+
+    }
+
+    render() {
+        // const { userData } = this.props;
+        // editRef.setFielsValue({ userData })
+        // console.log("接收到的" + JSON.stringify({ userData }))
         const formItemLayout = {
             labelCol: { span: 6 },
             wrapperCol: { span: 14 }
@@ -14,23 +37,14 @@ class UserEdit extends Component {
 
         return (
 
-            <Form {...formItemLayout} ref={this.editRef} initialValues={userData} >
+            <Form {...formItemLayout} ref={this.editRef}  >
 
                 <FormItem name="id" label="主键" hidden>
                     <Input />
                 </FormItem>
 
-                <FormItem name="account" label="账号" rules={[
-                    {
-                        required: true,
-                        message: '请输入账号',
-                    },
-                    // {
-                    //     type: 'number',
-                    //     message: '账号由数字组成',
-                    // },
-                ]} >
-                    <Input placeholder="请输入账号" />
+                <FormItem name="account" label="账号" >
+                    <Input placeholder="请输入账号" disabled />
                 </FormItem>
 
                 <FormItem name="name" label="姓名" rules={[

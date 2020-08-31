@@ -23,7 +23,7 @@ class UserAdd extends Component {
                         message: '请输入账号',
                     },
                     {
-                        type: 'number',
+                        pattern: new RegExp(/^[0-9]\d*$/, "g"),
                         message: '账号由数字组成',
                     },
                 ]} >

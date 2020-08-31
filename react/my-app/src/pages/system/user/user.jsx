@@ -195,11 +195,11 @@ class User extends Component {
     //添加验证
     handleOk = () => {
         const ref = this.addChild.current.addRef.current;
-        this.setState({ showStatus: 0 });
         ref.validateFields()
             .then(values => {
                 ref.resetFields();
                 this.addUser(values);
+                this.setState({ showStatus: 0 });
             })
             .catch(errorInfo => {
                 console.log(errorInfo)
@@ -231,9 +231,9 @@ class User extends Component {
         const ref = this.editChild.current.editRef.current;
         ref.validateFields()
             .then(values => {
-                this.setState({ showStatus: 0 });
                 ref.resetFields();
                 this.editUser(values);
+                this.setState({ showStatus: 0 });
             })
             .catch(errorInfo => {
                 console.log(errorInfo)
