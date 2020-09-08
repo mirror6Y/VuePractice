@@ -4,7 +4,7 @@ import { QuestionCircleOutlined, ExclamationCircleOutlined } from '@ant-design/i
 
 import { formatDate, parseDate } from '../../../utils/dateUtil'
 // import LinkButton from '../../../components/button'
-import { reqUserList, reqUserAdd, reqUserDelete, reqUserEdit, reqUserStatusEdit, reqUserSearch } from '../../../api/api.js'
+import { reqUserList, reqUserAdd, reqUserDelete, reqUserEdit, reqUserStatusEdit } from '../../../api/api.js'
 import UserAdd from './userAdd'
 import UserEdit from './userEdit'
 
@@ -95,7 +95,7 @@ class User extends Component {
         data.pageNum = current;
         data.pageSize = pageSize;
 
-        const result = await reqUserSearch(data);
+        const result = await reqUserList(data);
 
         if (result.code === 200) {
             const data = result.data.records;
@@ -117,7 +117,7 @@ class User extends Component {
         if (data.gmtCreate) {
             data.gmtCreate = parseDate(data.gmtCreate[0]._d) + "&" + parseDate(data.gmtCreate[1]._d)
         }
-        const result = await reqUserSearch(data);
+        const result = await reqUserList(data);
         if (result.code === 200) {
             const data = result.data.records;
             this.setState({ userList: data })

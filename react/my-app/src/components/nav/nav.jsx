@@ -82,8 +82,7 @@ class Nav extends Component {
             <div>
                 <div className="nav">
                     <Link to='/home' className="nav-header">
-                        <img src={logo} alt="logo"></img>
-                        <h1>CityMis后台</h1>
+                        <h1>智慧校园后台管理</h1>
                     </Link>
 
                     <Menu

@@ -8,28 +8,23 @@ class UserEdit extends Component {
     componentWillMount() {
         const { userData } = this.props;
         setTimeout(() => {
-            console.log({ ...userData })
-            console.log({ userData })
-            this.editRef.current.setFieldsValue({ account: '123' });
+            this.editRef.current.setFieldsValue({ ...userData });
         }, 100);
 
     }
 
 
-    componentWillUpdate() {
+    componentDidUpdate() {
         const { userData } = this.props;
         setTimeout(() => {
             console.log({ ...userData })
-            console.log({ userData })
             this.editRef.current.setFieldsValue({ ...userData });
         }, 100);
 
     }
 
     render() {
-        // const { userData } = this.props;
-        // editRef.setFielsValue({ userData })
-        // console.log("接收到的" + JSON.stringify({ userData }))
+
         const formItemLayout = {
             labelCol: { span: 6 },
             wrapperCol: { span: 14 }
