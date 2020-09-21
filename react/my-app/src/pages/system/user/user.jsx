@@ -96,7 +96,6 @@ class User extends Component {
         data.pageSize = pageSize;
 
         const result = await reqUserList(data);
-
         if (result.code === 200) {
             const data = result.data.records;
             this.setState({
@@ -148,6 +147,7 @@ class User extends Component {
                 } else {
                     record.enabled = 0
                 }
+                record.roleIds = record.roleIds.split(',');
                 const result = await reqUserStatusEdit(record);
                 if (result.code === 200) {
 
@@ -174,6 +174,8 @@ class User extends Component {
         this.setState({
             showStatus: 0
         })
+        const ref = this.addChild.current.addRef.current;
+        ref.resetFields();
     }
 
     //显示添加组件
@@ -366,8 +368,8 @@ class User extends Component {
                         <Col span={5}>
                             <FormItem name="enabled" label="启用状态">
                                 <Select placeholder="请选择">
-                                    <Option value="0">启用</Option>
-                                    <Option value="1">禁用</Option>
+                                    <Option value="0">开启</Option>
+                                    <Option value="1">关闭</Option>
                                 </Select>
                             </FormItem>
                         </Col>

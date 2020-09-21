@@ -38,7 +38,7 @@ export const reqUserStatusEdit=(data)=>ajax('/system/user/updateStatus', data,'P
 
 //--------------------------角色模块--------------------------------------------
 
-// 角色列表
+// 角色列表(添加用户时使用)
 export const reqRoleList=()=>ajax('/system/role/getRoleList', null,'GET')
 
 //添加角色

@@ -544,7 +544,27 @@ module.exports = function (webpackEnv) {
         },
       ],
     },
+    // devServer: {
+    //   clientLogLevel: 'warning',
+    //   historyApiFallback: {
+    //     rewrites: [
+    //       { from: /.*/, to: path.posix.join(config.dev.assertPublicPath, 'index.html') },
+    //     ],
+    //   },
+    //   hot: true,
+    //   contentBase: false, // since we use CopyWebpackPlugin.
+    //   compress: true,
+    //   open: true,
+    //   port: config.dev.port,
+    // },
     plugins: [
+      // new CopyWebpackPlugin([
+      //   {
+      //     from: path.resolve(__dirname, '../static'),
+      //     to: config.dev.assetsSubDirectory,
+      //     ignore: ['.*']
+      //   }
+      // ]),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(

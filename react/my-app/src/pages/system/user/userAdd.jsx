@@ -1,10 +1,31 @@
 import React, { Component } from 'react';
-import { Form, Input, Radio, Checkbox, Row, Col } from 'antd'
+import { Form, Input, Radio, TreeSelect } from 'antd'
+import { reqRoleList } from '../../../api/api.js'
+
 const FormItem = Form.Item;
 
 class UserAdd extends Component {
 
     addRef = React.createRef();
+
+    state = {
+        treeData: []
+    }
+
+    getTreeData = async () => {
+
+        const result = await reqRoleList();
+        if (result.code === 200) {
+            const data = result.data;
+            this.setState({
+                treeData: data,
+            })
+        }
+    }
+
+    componentDidMount() {
+        this.getTreeData();
+    }
 
     render() {
 
@@ -12,6 +33,9 @@ class UserAdd extends Component {
             labelCol: { span: 6 },
             wrapperCol: { span: 14 }
         };
+
+        const { treeData } = this.state;
+
 
         return (
 
@@ -62,43 +86,17 @@ class UserAdd extends Component {
                 <Form.Item name="roleIds" label="角色" rules={[
                     {
                         required: true,
-                        message: '请选择角色',
                     },
                 ]} >
-                    <Checkbox.Group>
-                        <Row>
-                            <Col span={8}>
-                                <Checkbox
-                                    value="1"
-                                    style={{
-                                        lineHeight: '32px',
-                                    }}
-                                >
-                                    普通角色
-                                </Checkbox>
-                            </Col>
-                            <Col span={8}>
-                                <Checkbox
-                                    value="2"
-                                    style={{
-                                        lineHeight: '32px',
-                                    }}
-                                >
-                                    学生管理员
-                                </Checkbox>
-                            </Col>
-                            <Col span={8}>
-                                <Checkbox
-                                    value="3"
-                                    style={{
-                                        lineHeight: '32px',
-                                    }}
-                                >
-                                    教师管理员
-                                </Checkbox>
-                            </Col>
-                        </Row>
-                    </Checkbox.Group>
+                    <TreeSelect
+                        allowClear="true"
+                        treeCheckable="true"
+                        treeData={treeData}
+                        placeholder="请选择角色"
+                        treeDefaultExpandAll
+                        showCheckedStrategy="SHOW_PARENT"
+                    />
+
                 </Form.Item>
             </Form>
         );
