@@ -2,7 +2,7 @@ import ajax from './ajax'
 import jsonp from 'jsonp'
 
 //登录
-export const reqLogin = (username, password) => ajax('/login', { username, password }, 'GET');
+export const reqLogin = (username, password) => ajax('/api/login', { username, password }, 'GET');
 
 //天气
 export const reqWeather = (cityCode) => {
@@ -22,24 +22,24 @@ export const reqWeather = (cityCode) => {
 }
 
 // 用户列表
-export const reqUserList=(data)=>ajax('/system/user/getUserList', data,'GET')
+export const reqUserList=(data)=>ajax('/api/system/user/getUserPage', data,'GET')
 
 //添加用户
-export const reqUserAdd=(data)=>ajax('/system/user/addUser', data,'POST')
+export const reqUserAdd=(data)=>ajax('/api/system/user/addUser', data,'POST')
 
 //删除用户
-export const reqUserDelete=(data)=>ajax('/system/user/deleteUser',data,'DELETE')
+export const reqUserDelete=(data)=>ajax('/api/system/user/deleteUser',data,'DELETE')
 
 //编辑用户
-export const reqUserEdit=(data)=>ajax('/system/user/updateUser', data,'PUT')
+export const reqUserEdit=(data)=>ajax('/api/system/user/updateUser', data,'PUT')
 
 //编辑用户状态
-export const reqUserStatusEdit=(data)=>ajax('/system/user/updateStatus', data,'PUT')
+export const reqUserStatusEdit=(data)=>ajax('/api/system/user/updateStatus', data,'PUT')
 
 //--------------------------角色模块--------------------------------------------
 
 // 角色列表(添加用户时使用)
-export const reqRoleList=()=>ajax('/system/role/getRoleList', null,'GET')
+export const reqRoleList=()=>ajax('/api/system/role/getRoleList', null,'GET')
 
 //添加角色
-export const reqRoleAdd=(data)=>ajax('/system/role/addRole', data,'POST')
+export const reqRoleAdd=(data)=>ajax('/api/system/role/addRole', data,'POST')

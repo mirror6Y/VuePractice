@@ -15,11 +15,15 @@ class UserAdd extends Component {
     getTreeData = async () => {
 
         const result = await reqRoleList();
+        console.log("1:"+result);
         if (result.code === 200) {
             const data = result.data;
-            this.setState({
-                treeData: data,
-            })
+            // if (null != data && undefined != data) {
+                this.setState({
+                    treeData: data,
+                })
+            // }
+
         }
     }
 
