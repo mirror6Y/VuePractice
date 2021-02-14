@@ -10,10 +10,10 @@ class UserEdit extends Component {
 
     state = {
         treeData: [],
-        treeData1: [{ title: "普通角色", value: "1305056278851444738", key: "1305056278851444738" },
-        { title: "学生管理员", value: "1305130522406924290", key: "1305130522406924290" }, { title: "教师管理员", value: "1306882513755795458", key: "1306882513755795458" }],
+        // treeData1: [{ title: "普通角色", value: "1305056278851444738", key: "1305056278851444738" },
+        // { title: "学生管理员", value: "1305130522406924290", key: "1305130522406924290" }, { title: "教师管理员", value: "1306882513755795458", key: "1306882513755795458" }],
         value: [],
-        value1: ["1305056278851444738"]
+        // value1: ["1305056278851444738"]
     }
 
     getTreeData = async () => {
@@ -115,10 +115,9 @@ class UserEdit extends Component {
                     <TreeSelect
                         allowClear="true"
                         treeCheckable="true"
-                        treeData={treeData1}
+                        treeData={treeData}
                         value={value1}
                         showCheckedStrategy="SHOW_PARENT"
-
                     />
                 </FormItem>
 

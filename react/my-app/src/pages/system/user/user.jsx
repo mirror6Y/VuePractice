@@ -64,7 +64,7 @@ class User extends Component {
                 title: '是否启用',
                 dataIndex: 'enabled',
                 render: (text, record, index) => (
-                    <Switch checkedChildren="开启" unCheckedChildren="关闭" checked={text === 0 ? 1 : 0} defaultChecked onChange={() => this.onChange(text, record)} />
+                    <Switch checkedChildren="开启" unCheckedChildren="关闭" checked={text === 0 ? 0 : 1} defaultChecked onChange={() => this.onChange(text, record)} />
                 )
             },
             {
@@ -174,8 +174,11 @@ class User extends Component {
         this.setState({
             showStatus: 0
         })
-        const ref = this.addChild.current.addRef.current;
-        ref.resetFields();
+        const current = this.addChild.current;
+        if (null != current && undefined != current) {
+            const ref = current.addRef.current;
+            ref.resetFields();
+        }
     }
 
     //显示添加组件
@@ -368,8 +371,8 @@ class User extends Component {
                         <Col span={5}>
                             <FormItem name="enabled" label="启用状态">
                                 <Select placeholder="请选择">
-                                    <Option value="0">开启</Option>
-                                    <Option value="1">关闭</Option>
+                                    <Option value="1">开启</Option>
+                                    <Option value="0">关闭</Option>
                                 </Select>
                             </FormItem>
                         </Col>
