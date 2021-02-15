@@ -4,7 +4,7 @@ import { QuestionCircleOutlined, ExclamationCircleOutlined } from '@ant-design/i
 
 import { formatDate, parseDate } from '../../../utils/dateUtil'
 // import LinkButton from '../../../components/button'
-import { reqUserList, reqUserAdd, reqUserDelete, reqUserEdit, reqUserStatusEdit } from '../../../api/api.js'
+import { reqUserList, reqUserAdd, reqUserDelete, reqUserEdit, reqUserStatusEdit, reqUserGet } from '../../../api/api.js'
 import UserAdd from './userAdd'
 import UserEdit from './userEdit'
 
@@ -79,7 +79,7 @@ class User extends Component {
                 render: (user) => (
                     <span>
                         <Space>
-                            <Button onClick={() => this.showEdit(user)}>编辑</Button>
+                            <Button onClick={() => this.showEdit(user.id)}>编辑</Button>
                             <Button type='danger' onClick={() => this.deleteUser(user.id)}>删除</Button>
                         </Space>
                     </span>
@@ -174,27 +174,43 @@ class User extends Component {
         this.setState({
             showStatus: 0
         })
-        const current = this.addChild.current;
-        if (null != current && undefined != current) {
-            const ref = current.addRef.current;
-            ref.resetFields();
-        }
     }
 
     //显示添加组件
     showAdd = () => {
+
+        const current = this.addChild.current;
+        if (null != current && undefined != current) {
+            current.addRef.current.resetFields();
+        }
+
         this.setState({
             showStatus: 1
         })
     }
 
     //显示编辑组件
-    showEdit = (user) => {
-        //保存对象
-        this.editData = user;
-        this.setState({
-            showStatus: 2
-        })
+    showEdit = async (index) => {
+
+        const editCur = this.editChild.current;
+        if (null != editCur && undefined != editCur) {
+            editCur.editRef.current.resetFields();
+        }
+
+        const result = await reqUserGet(index);
+        if (result.code === 200) {
+            //保存对象
+            this.editData = result.data;
+            this.setState({
+                showStatus: 2
+            })
+        } else {
+            notification.error({
+                duration: null,
+                message: '提示',
+                description: result.msg
+            })
+        }
     }
 
     //添加验证
@@ -202,7 +218,7 @@ class User extends Component {
         const ref = this.addChild.current.addRef.current;
         ref.validateFields()
             .then(values => {
-                ref.resetFields();
+                // ref.resetFields();
                 this.addUser(values);
                 this.setState({ showStatus: 0 });
             })
@@ -236,7 +252,7 @@ class User extends Component {
         const ref = this.editChild.current.editRef.current;
         ref.validateFields()
             .then(values => {
-                ref.resetFields();
+                // ref.resetFields();
                 this.editUser(values);
                 this.setState({ showStatus: 0 });
             })

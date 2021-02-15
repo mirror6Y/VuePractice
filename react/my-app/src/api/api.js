@@ -22,24 +22,28 @@ export const reqWeather = (cityCode) => {
 }
 
 // 用户列表
-export const reqUserList=(data)=>ajax('/api/system/user/getUserPage', data,'GET')
+export const reqUserList = (data) => ajax('/api/system/user/getUserPage', data, 'GET')
 
 //添加用户
-export const reqUserAdd=(data)=>ajax('/api/system/user/addUser', data,'POST')
+export const reqUserAdd = (data) => ajax('/api/system/user/addUser', data, 'POST')
 
 //删除用户
-export const reqUserDelete=(data)=>ajax('/api/system/user/deleteUser',data,'DELETE')
+export const reqUserDelete = (data) => ajax('/api/system/user/deleteUser', data, 'DELETE')
 
 //编辑用户
-export const reqUserEdit=(data)=>ajax('/api/system/user/updateUser', data,'PUT')
+export const reqUserEdit = (data) => ajax('/api/system/user/updateUser', data, 'PUT')
 
 //编辑用户状态
-export const reqUserStatusEdit=(data)=>ajax('/api/system/user/updateStatus', data,'PUT')
+export const reqUserStatusEdit = (data) => ajax('/api/system/user/updateStatus', data, 'PUT')
+
+//查询用户信息
+export const reqUserGet = (data) => ajax('/api/system/user/getUser/' + data, null, 'GET')
+
 
 //--------------------------角色模块--------------------------------------------
 
 // 角色列表(添加用户时使用)
-export const reqRoleList=()=>ajax('/api/system/role/getRoleList', null,'GET')
+export const reqRoleList = () => ajax('/api/system/role/getRoleList', null, 'GET')
 
 //添加角色
-export const reqRoleAdd=(data)=>ajax('/api/system/role/addRole', data,'POST')
+export const reqRoleAdd = (data) => ajax('/api/system/role/addRole', data, 'POST')

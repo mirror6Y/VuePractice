@@ -12,12 +12,11 @@ class UserEdit extends Component {
         treeData: [],
         // treeData1: [{ title: "普通角色", value: "1305056278851444738", key: "1305056278851444738" },
         // { title: "学生管理员", value: "1305130522406924290", key: "1305130522406924290" }, { title: "教师管理员", value: "1306882513755795458", key: "1306882513755795458" }],
-        value: [],
+        value: undefined,
         // value1: ["1305056278851444738"]
     }
 
     getTreeData = async () => {
-
         const result = await reqRoleList();
         if (result.code === 200) {
             const data = result.data;
@@ -28,27 +27,23 @@ class UserEdit extends Component {
         }
     }
 
-
     componentDidMount() {
-        const { userData } = this.props;
-        this.setState({
-            value: userData.roleIds.split(',')
-        })
-        setTimeout(() => {
-            this.editRef.current.setFieldsValue({ ...userData });
-        }, 100);
         this.getTreeData();
     }
 
-
     componentDidUpdate() {
         const { userData } = this.props;
-        // this.setState({
-        //     checkedKeys: userData.roleIds.split(',')
-        // })
-        setTimeout(() => {
-            this.editRef.current.setFieldsValue({ ...userData });
-        }, 100);
+        console.log("222" + JSON.stringify(userData))
+        
+        this.editRef.current.setFieldsValue({ ...userData });
+    }
+
+    UNSAFE_componentWillReceiveProps(){
+        const { userData } = this.props;
+
+        this.setState({
+            value: userData.roleIds
+        })
     }
 
 
@@ -60,7 +55,6 @@ class UserEdit extends Component {
         };
 
         const { treeData, value, treeData1, value1 } = this.state;
-        console.log(value)
 
         return (
 
@@ -103,20 +97,20 @@ class UserEdit extends Component {
                     <Input placeholder="请输入电子邮箱" />
                 </FormItem>
                 <FormItem name="roleId" label="角色">
-                    <TreeSelect
+                    {/* <TreeSelect hidden
                         allowClear="true"
                         treeCheckable="true"
                         treeData={treeData}
                         value={value}
                         showCheckedStrategy="SHOW_PARENT"
 
-                    />
+                    /> */}
 
                     <TreeSelect
                         allowClear="true"
                         treeCheckable="true"
                         treeData={treeData}
-                        value={value1}
+                        value={value}
                         showCheckedStrategy="SHOW_PARENT"
                     />
                 </FormItem>
