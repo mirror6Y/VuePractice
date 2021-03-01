@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Radio, TreeSelect } from 'antd'
+import { Form, Input, Radio, TreeSelect,Modal } from 'antd'
 import { reqRoleList } from '../../../api/api.js'
 
 const FormItem = Form.Item;
@@ -33,8 +33,6 @@ class UserEdit extends Component {
 
     componentDidUpdate() {
         const { userData } = this.props;
-        console.log("222" + JSON.stringify(userData))
-        
         this.editRef.current.setFieldsValue({ ...userData });
     }
 
@@ -57,9 +55,7 @@ class UserEdit extends Component {
         const { treeData, value, treeData1, value1 } = this.state;
 
         return (
-
             <Form {...formItemLayout} ref={this.editRef}  >
-
                 <FormItem name="id" label="主键" hidden>
                     <Input />
                 </FormItem>
@@ -96,16 +92,7 @@ class UserEdit extends Component {
                 ]} >
                     <Input placeholder="请输入电子邮箱" />
                 </FormItem>
-                <FormItem name="roleId" label="角色">
-                    {/* <TreeSelect hidden
-                        allowClear="true"
-                        treeCheckable="true"
-                        treeData={treeData}
-                        value={value}
-                        showCheckedStrategy="SHOW_PARENT"
-
-                    /> */}
-
+                <FormItem name="roleIds" label="角色">
                     <TreeSelect
                         allowClear="true"
                         treeCheckable="true"
@@ -114,7 +101,6 @@ class UserEdit extends Component {
                         showCheckedStrategy="SHOW_PARENT"
                     />
                 </FormItem>
-
             </Form>
         );
     }

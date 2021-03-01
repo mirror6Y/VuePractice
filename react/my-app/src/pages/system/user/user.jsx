@@ -314,13 +314,12 @@ class User extends Component {
     }
 
     deleteBatch = () => {
-
         Modal.confirm({
             title: '提示',
             okText: '确定',
             cancelText: '取消',
             icon: <QuestionCircleOutlined />,
-            content: '您确定删除勾选内容吗？',
+            content: `您确定删除${this.state.selectedRowKeys.length}项吗？`,
             onOk: async () => {
 
                 const ids = this.state.selectedRowKeys;
@@ -356,7 +355,14 @@ class User extends Component {
     componentDidMount() {
         this.getUserList();
     }
-
+    resetSearch = async() => {
+        this.formRef.current.resetFields()
+        const result = await reqUserList({pageNum: 1,pageSize: 10});
+        if (result.code === 200) {
+            const data = result.data.records;
+            this.setState({ userList: data })
+        }
+    }
     render() {
 
         const editData = this.editData;
@@ -400,7 +406,7 @@ class User extends Component {
                         <Col span={24}>
                             <Space>
                                 <Button type="primary" onClick={this.search}>搜索</Button>
-                                <Button onClick={() => { this.formRef.current.resetFields(); }}>重置 </Button>
+                                <Button onClick={this.resetSearch}>重置 </Button>
                             </Space>
                         </Col>
                     </Row>
